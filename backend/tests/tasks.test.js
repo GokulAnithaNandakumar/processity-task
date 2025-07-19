@@ -12,7 +12,7 @@ let testTask;
 describe('Tasks API Endpoints', () => {
   // Increase timeout for individual tests
   jest.setTimeout(60000);
-  
+
   beforeEach(async () => {
     await User.deleteMany({});
     await Task.deleteMany({});

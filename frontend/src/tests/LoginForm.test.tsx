@@ -62,7 +62,7 @@ describe('LoginForm', () => {
     renderWithRouter(<LoginForm />);
 
     const emailInput = screen.getByLabelText(/email address/i);
-    const passwordInput = screen.getByRole('textbox', { name: /password/i }) || 
+    const passwordInput = screen.getByRole('textbox', { name: /password/i }) ||
                           document.querySelector('input[name="password"]') as HTMLInputElement;
     const loginButton = screen.getByRole('button', { name: /login/i });
 

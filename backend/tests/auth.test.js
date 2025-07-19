@@ -11,7 +11,7 @@ let testUser;
 describe('Auth API Endpoints', () => {
   // Increase timeout for individual tests
   jest.setTimeout(60000);
-  
+
   describe('POST /api/auth/register', () => {
     it('should register a new user successfully', async () => {
       const userData = {

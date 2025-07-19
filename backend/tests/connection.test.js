@@ -20,7 +20,7 @@ describe('Database Connection Test', () => {
 
   it('should create and retrieve a test user', async () => {
     const User = require('../models/User');
-    
+
     const testUser = new User({
       name: 'Test User',
       email: 'test@example.com',

@@ -6,7 +6,7 @@ const Task = require('../models/Task');
 const connectTestDB = async () => {
   try {
     const mongoUri = process.env.MONGO_URI_TEST || 'mongodb+srv://gokul:Qpg6FepNh2Ln4g7P@taskmanager.fq3tj.mongodb.net/taskmanager_test?retryWrites=true&w=majority';
-    
+
     const options = {
       serverSelectionTimeoutMS: 60000,
       socketTimeoutMS: 60000,
@@ -15,10 +15,10 @@ const connectTestDB = async () => {
       maxIdleTimeMS: 30000,
       bufferCommands: false
     };
-    
+
     await mongoose.connect(mongoUri, options);
     console.log('✅ Connected to test database');
-    
+
   } catch (error) {
     console.error('❌ Error connecting to test database:', error);
     throw error;
