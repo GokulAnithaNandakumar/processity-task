@@ -3,7 +3,6 @@ import {
   Box,
   Typography,
   Button,
-  Grid,
   Card,
   CardContent,
   CircularProgress,
@@ -79,120 +78,148 @@ export const Dashboard: React.FC = () => {
 
   // Calculate stats for display
   const pendingCount = stats?.stats.find(s => s._id === 'pending')?.count || 0;
-  const inProgressCount = stats?.stats.find(s => s._id === 'in-progress')?.count || 0;
   const completedCount = stats?.stats.find(s => s._id === 'completed')?.count || 0;
   const overdueCount = stats?.overdue || 0;
 
   return (
     <Layout>
-      <div className="space-y-6">
+      <Box sx={{ space: 3 }}>
         {/* Header */}
-        <div className="flex items-center justify-between bg-white rounded-xl shadow-lg border border-gray-100 p-6">
-          <div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+          <Box>
+            <Typography variant="h4" component="h1" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
               Task Dashboard
-            </h1>
-            <p className="text-gray-600 mt-1 font-medium">Manage your tasks efficiently</p>
-          </div>
-          <button
+            </Typography>
+            <Typography variant="body1" sx={{ color: 'text.secondary', mt: 0.5 }}>
+              Manage your tasks efficiently
+            </Typography>
+          </Box>
+          <Button
+            variant="contained"
+            startIcon={<Plus size={20} />}
             onClick={handleCreateTask}
-            className="inline-flex items-center px-6 py-3 text-sm font-semibold rounded-lg text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 transform hover:scale-[1.02] shadow-lg"
+            sx={{ 
+              textTransform: 'none',
+              px: 3,
+              py: 1,
+              fontWeight: 600,
+            }}
           >
-            <Plus className="h-4 w-4 mr-2" />
             New Task
-          </button>
-        </div>
+          </Button>
+        </Box>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-white overflow-hidden shadow-lg rounded-xl border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]">
-            <div className="p-6">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <div className="bg-gradient-to-r from-blue-100 to-blue-200 p-3 rounded-xl">
-                    <BarChart3 className="h-6 w-6 text-blue-600" />
-                  </div>
-                </div>
-                <div className="ml-5 w-0 flex-1">
-                  <dl>
-                    <dt className="text-sm font-semibold text-gray-600 truncate">
-                      Total Tasks
-                    </dt>
-                    <dd className="text-2xl font-bold text-gray-900">
-                      {stats?.total || 0}
-                    </dd>
-                  </dl>
-                </div>
-              </div>
-            </div>
-          </div>
+        <Box sx={{ 
+          display: 'grid', 
+          gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', lg: '1fr 1fr 1fr 1fr' }, 
+          gap: 3, 
+          mb: 4 
+        }}>
+          <Card sx={{ height: '100%' }}>
+            <CardContent>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Box sx={{ 
+                  bgcolor: 'primary.main', 
+                  borderRadius: 1, 
+                  p: 1, 
+                  mr: 2,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                  <BarChart3 size={24} color="white" />
+                </Box>
+                <Box>
+                  <Typography variant="body2" color="text.secondary">
+                    Total Tasks
+                  </Typography>
+                  <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
+                    {stats?.total || 0}
+                  </Typography>
+                </Box>
+              </Box>
+            </CardContent>
+          </Card>
 
-          <div className="bg-white overflow-hidden shadow-lg rounded-xl border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]">
-            <div className="p-6">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <div className="bg-gradient-to-r from-yellow-100 to-yellow-200 p-3 rounded-xl">
-                    <Clock className="h-6 w-6 text-yellow-600" />
-                  </div>
-                </div>
-                <div className="ml-5 w-0 flex-1">
-                  <dl>
-                    <dt className="text-sm font-semibold text-gray-600 truncate">
-                      Pending
-                    </dt>
-                    <dd className="text-2xl font-bold text-gray-900">
-                      {pendingCount}
-                    </dd>
-                  </dl>
-                </div>
-              </div>
-            </div>
-          </div>
+          <Card sx={{ height: '100%' }}>
+            <CardContent>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Box sx={{ 
+                  bgcolor: 'warning.main', 
+                  borderRadius: 1, 
+                  p: 1, 
+                  mr: 2,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                  <Clock size={24} color="white" />
+                </Box>
+                <Box>
+                  <Typography variant="body2" color="text.secondary">
+                    Pending
+                  </Typography>
+                  <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
+                    {pendingCount}
+                  </Typography>
+                </Box>
+              </Box>
+            </CardContent>
+          </Card>
 
-          <div className="bg-white overflow-hidden shadow-lg rounded-xl border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]">
-            <div className="p-6">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <div className="bg-gradient-to-r from-green-100 to-green-200 p-3 rounded-xl">
-                    <CheckCircle className="h-6 w-6 text-green-600" />
-                  </div>
-                </div>
-                <div className="ml-5 w-0 flex-1">
-                  <dl>
-                    <dt className="text-sm font-semibold text-gray-600 truncate">
-                      Completed
-                    </dt>
-                    <dd className="text-2xl font-bold text-gray-900">
-                      {completedCount}
-                    </dd>
-                  </dl>
-                </div>
-              </div>
-            </div>
-          </div>
+          <Card sx={{ height: '100%' }}>
+            <CardContent>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Box sx={{ 
+                  bgcolor: 'success.main', 
+                  borderRadius: 1, 
+                  p: 1, 
+                  mr: 2,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                  <CheckCircle size={24} color="white" />
+                </Box>
+                <Box>
+                  <Typography variant="body2" color="text.secondary">
+                    Completed
+                  </Typography>
+                  <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
+                    {completedCount}
+                  </Typography>
+                </Box>
+              </Box>
+            </CardContent>
+          </Card>
 
-          <div className="bg-white overflow-hidden shadow-lg rounded-xl border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]">
-            <div className="p-6">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <div className="bg-gradient-to-r from-red-100 to-red-200 p-3 rounded-xl">
-                    <AlertTriangle className="h-6 w-6 text-red-600" />
-                  </div>
-                </div>
-                <div className="ml-5 w-0 flex-1">
-                  <dl>
-                    <dt className="text-sm font-semibold text-gray-600 truncate">
-                      Overdue
-                    </dt>
-                    <dd className="text-2xl font-bold text-gray-900">
-                      {overdueCount}
-                    </dd>
-                  </dl>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+          <Card sx={{ height: '100%' }}>
+            <CardContent>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Box sx={{ 
+                  bgcolor: 'error.main', 
+                  borderRadius: 1, 
+                  p: 1, 
+                  mr: 2,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                  <AlertTriangle size={24} color="white" />
+                </Box>
+                <Box>
+                  <Typography variant="body2" color="text.secondary">
+                    Overdue
+                  </Typography>
+                  <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
+                    {overdueCount}
+                  </Typography>
+                </Box>
+              </Box>
+            </CardContent>
+          </Card>
+        </Box>
 
         {/* Filters */}
         <TaskFilters
@@ -204,44 +231,64 @@ export const Dashboard: React.FC = () => {
 
         {/* Error Display */}
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-xl flex items-center shadow-lg">
-            <AlertTriangle className="h-5 w-5 mr-3" />
-            <span className="font-medium">{error}</span>
-          </div>
+          <Alert severity="error" sx={{ mb: 3 }}>
+            {error}
+          </Alert>
         )}
 
         {/* Tasks Grid */}
-        <div>
+        <Box>
           {loading ? (
-            <div className="flex items-center justify-center py-16">
-              <div className="text-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                <p className="text-gray-600 font-medium">Loading your tasks...</p>
-              </div>
-            </div>
+            <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
+              <Box sx={{ textAlign: 'center' }}>
+                <CircularProgress size={48} sx={{ mb: 2 }} />
+                <Typography variant="body1" color="text.secondary">
+                  Loading your tasks...
+                </Typography>
+              </Box>
+            </Box>
           ) : filteredTasks.length === 0 ? (
-            <div className="text-center py-16 bg-white rounded-xl shadow-lg border border-gray-100">
-              <div className="bg-gradient-to-r from-blue-100 to-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Plus className="h-8 w-8 text-blue-600" />
-              </div>
-              <h3 className="mt-2 text-lg font-semibold text-gray-900">No tasks found</h3>
-              <p className="mt-1 text-sm text-gray-500 max-w-sm mx-auto">
-                {searchQuery ? 'Try adjusting your search terms or filters.' : 'Get started by creating your first task.'}
-              </p>
-              {!searchQuery && (
-                <div className="mt-6">
-                  <button
-                    onClick={handleCreateTask}
-                    className="inline-flex items-center px-6 py-3 text-sm font-semibold rounded-lg text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 transform hover:scale-[1.02] shadow-lg"
-                  >
-                    <Plus className="h-4 w-4 mr-2" />
-                    Create Your First Task
-                  </button>
-                </div>
-              )}
-            </div>
+            <Card sx={{ py: 8 }}>
+              <CardContent>
+                <Box sx={{ textAlign: 'center' }}>
+                  <Box sx={{ 
+                    bgcolor: 'primary.light', 
+                    borderRadius: '50%', 
+                    width: 64, 
+                    height: 64, 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center', 
+                    mx: 'auto', 
+                    mb: 2 
+                  }}>
+                    <Plus size={32} color="white" />
+                  </Box>
+                  <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>
+                    No tasks found
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 3, maxWidth: 400, mx: 'auto' }}>
+                    {searchQuery ? 'Try adjusting your search terms or filters.' : 'Get started by creating your first task.'}
+                  </Typography>
+                  {!searchQuery && (
+                    <Button
+                      variant="contained"
+                      startIcon={<Plus size={20} />}
+                      onClick={handleCreateTask}
+                      sx={{ textTransform: 'none', fontWeight: 600 }}
+                    >
+                      Create Your First Task
+                    </Button>
+                  )}
+                </Box>
+              </CardContent>
+            </Card>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Box sx={{ 
+              display: 'grid', 
+              gridTemplateColumns: { xs: '1fr', md: '1fr 1fr', lg: '1fr 1fr 1fr' }, 
+              gap: 3 
+            }}>
               {filteredTasks.map((task) => (
                 <TaskCard
                   key={task._id}
@@ -250,9 +297,9 @@ export const Dashboard: React.FC = () => {
                   onDelete={handleDeleteTask}
                 />
               ))}
-            </div>
+            </Box>
           )}
-        </div>
+        </Box>
 
         {/* Task Form Modal */}
         <TaskForm
@@ -261,7 +308,22 @@ export const Dashboard: React.FC = () => {
           onClose={() => setShowTaskForm(false)}
           onSuccess={handleFormSuccess}
         />
-      </div>
+
+        {/* Floating Action Button */}
+        <Fab
+          color="primary"
+          aria-label="add task"
+          onClick={handleCreateTask}
+          sx={{
+            position: 'fixed',
+            bottom: 24,
+            right: 24,
+            display: { xs: 'flex', sm: 'none' }, // Only show on mobile
+          }}
+        >
+          <Plus size={24} />
+        </Fab>
+      </Box>
     </Layout>
   );
 };
