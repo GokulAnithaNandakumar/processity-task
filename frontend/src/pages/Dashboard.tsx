@@ -98,7 +98,7 @@ export const Dashboard: React.FC = () => {
             variant="contained"
             startIcon={<Plus size={20} />}
             onClick={handleCreateTask}
-            sx={{ 
+            sx={{
               textTransform: 'none',
               px: 3,
               py: 1,
@@ -110,19 +110,19 @@ export const Dashboard: React.FC = () => {
         </Box>
 
         {/* Stats Cards */}
-        <Box sx={{ 
-          display: 'grid', 
-          gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', lg: '1fr 1fr 1fr 1fr' }, 
-          gap: 3, 
-          mb: 4 
+        <Box sx={{
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', lg: '1fr 1fr 1fr 1fr' },
+          gap: 3,
+          mb: 4
         }}>
           <Card sx={{ height: '100%' }}>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Box sx={{ 
-                  bgcolor: 'primary.main', 
-                  borderRadius: 1, 
-                  p: 1, 
+                <Box sx={{
+                  bgcolor: 'primary.main',
+                  borderRadius: 1,
+                  p: 1,
                   mr: 2,
                   display: 'flex',
                   alignItems: 'center',
@@ -145,10 +145,10 @@ export const Dashboard: React.FC = () => {
           <Card sx={{ height: '100%' }}>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Box sx={{ 
-                  bgcolor: 'warning.main', 
-                  borderRadius: 1, 
-                  p: 1, 
+                <Box sx={{
+                  bgcolor: 'warning.main',
+                  borderRadius: 1,
+                  p: 1,
                   mr: 2,
                   display: 'flex',
                   alignItems: 'center',
@@ -171,10 +171,10 @@ export const Dashboard: React.FC = () => {
           <Card sx={{ height: '100%' }}>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Box sx={{ 
-                  bgcolor: 'success.main', 
-                  borderRadius: 1, 
-                  p: 1, 
+                <Box sx={{
+                  bgcolor: 'success.main',
+                  borderRadius: 1,
+                  p: 1,
                   mr: 2,
                   display: 'flex',
                   alignItems: 'center',
@@ -197,10 +197,10 @@ export const Dashboard: React.FC = () => {
           <Card sx={{ height: '100%' }}>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Box sx={{ 
-                  bgcolor: 'error.main', 
-                  borderRadius: 1, 
-                  p: 1, 
+                <Box sx={{
+                  bgcolor: 'error.main',
+                  borderRadius: 1,
+                  p: 1,
                   mr: 2,
                   display: 'flex',
                   alignItems: 'center',
@@ -251,16 +251,16 @@ export const Dashboard: React.FC = () => {
             <Card sx={{ py: 8 }}>
               <CardContent>
                 <Box sx={{ textAlign: 'center' }}>
-                  <Box sx={{ 
-                    bgcolor: 'primary.light', 
-                    borderRadius: '50%', 
-                    width: 64, 
-                    height: 64, 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    justifyContent: 'center', 
-                    mx: 'auto', 
-                    mb: 2 
+                  <Box sx={{
+                    bgcolor: 'primary.light',
+                    borderRadius: '50%',
+                    width: 64,
+                    height: 64,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    mx: 'auto',
+                    mb: 2
                   }}>
                     <Plus size={32} color="white" />
                   </Box>
@@ -284,10 +284,10 @@ export const Dashboard: React.FC = () => {
               </CardContent>
             </Card>
           ) : (
-            <Box sx={{ 
-              display: 'grid', 
-              gridTemplateColumns: { xs: '1fr', md: '1fr 1fr', lg: '1fr 1fr 1fr' }, 
-              gap: 3 
+            <Box sx={{
+              display: 'grid',
+              gridTemplateColumns: { xs: '1fr', md: '1fr 1fr', lg: '1fr 1fr 1fr' },
+              gap: 3
             }}>
               {filteredTasks.map((task) => (
                 <TaskCard
