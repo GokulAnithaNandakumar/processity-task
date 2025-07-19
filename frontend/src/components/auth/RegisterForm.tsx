@@ -65,7 +65,7 @@ export const RegisterForm: React.FC = () => {
                 {error}
               </Alert>
             )}
-            
+
             <TextField
               name="name"
               required

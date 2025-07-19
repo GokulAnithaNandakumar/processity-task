@@ -14,8 +14,10 @@ const taskRoutes = require('./routes/tasks');
 // Initialize Express app
 const app = express();
 
-// Connect to database
-connectDB();
+// Connect to database (only if not in test mode)
+if (process.env.NODE_ENV !== 'test') {
+  connectDB();
+}
 
 // Security middleware
 app.use(helmet());
@@ -30,7 +32,14 @@ app.use('/api', limiter);
 
 // CORS
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+  origin: [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'http://127.0.0.1:5173',
+    process.env.CORS_ORIGIN
+  ].filter(Boolean),
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
 }));
 
@@ -78,8 +87,11 @@ app.use('*', (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT} in ${process.env.NODE_ENV} mode`);
-});
+// Only start the server if not in test mode
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT} in ${process.env.NODE_ENV} mode`);
+  });
+}
 
 module.exports = app;

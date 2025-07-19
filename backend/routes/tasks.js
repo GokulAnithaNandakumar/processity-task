@@ -157,17 +157,29 @@ router.post('/', validateTask, async (req, res) => {
       });
     }
 
+    // Check if due date is in the past and add warning
+    let warning = null;
+    if (req.body.dueDate && new Date(req.body.dueDate) < new Date()) {
+      warning = 'Due date is in the past. Task will be marked as overdue.';
+    }
+
     // Add user to req.body
     req.body.user = req.user._id;
 
     const task = await Task.create(req.body);
 
-    res.status(201).json({
+    const response = {
       status: 'success',
       data: {
         task
       }
-    });
+    };
+
+    if (warning) {
+      response.warning = warning;
+    }
+
+    res.status(201).json(response);
   } catch (error) {
     console.error('Create task error:', error);
     res.status(500).json({
@@ -204,17 +216,29 @@ router.put('/:id', validateTask, async (req, res) => {
       });
     }
 
+    // Check if due date is in the past and add warning
+    let warning = null;
+    if (req.body.dueDate && new Date(req.body.dueDate) < new Date()) {
+      warning = 'Due date is in the past. Task will be marked as overdue.';
+    }
+
     task = await Task.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true
     });
 
-    res.status(200).json({
+    const response = {
       status: 'success',
       data: {
         task
       }
-    });
+    };
+
+    if (warning) {
+      response.warning = warning;
+    }
+
+    res.status(200).json(response);
   } catch (error) {
     console.error('Update task error:', error);
     res.status(500).json({

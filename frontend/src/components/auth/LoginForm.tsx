@@ -58,7 +58,7 @@ export const LoginForm: React.FC = () => {
                 {error}
               </Alert>
             )}
-            
+
             <TextField
               margin="normal"
               required
@@ -107,7 +107,7 @@ export const LoginForm: React.FC = () => {
             >
               {loading ? <CircularProgress size={24} /> : 'Login'}
             </Button>
-            
+
             <Box sx={{ textAlign: 'right' }}>
               <Link to="/register">Don't have an account? Register</Link>
             </Box>

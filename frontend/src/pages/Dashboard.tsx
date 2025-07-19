@@ -14,13 +14,20 @@ import { Layout } from '../components/layout/Layout';
 import { TaskCard } from '../components/tasks/TaskCard';
 import { TaskForm } from '../components/tasks/TaskForm';
 import { TaskFilters } from '../components/tasks/TaskFilters';
+import { DeleteConfirmationDialog } from '../components/common/DeleteConfirmationDialog';
+import { WarningSnackbar } from '../components/common/WarningSnackbar';
 import { useTask } from '../hooks/useTask';
 import type { Task, TaskFilters as TaskFiltersType } from '../types';
 
 export const Dashboard: React.FC = () => {
-  const { tasks, stats, loading, error, fetchTasks, deleteTask, fetchStats } = useTask();
+  const { tasks, stats, loading, error, warning, fetchTasks, deleteTask, fetchStats, clearWarning } = useTask();
   const [showTaskForm, setShowTaskForm] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | undefined>();
+  const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; taskId: string; taskTitle: string }>({
+    open: false,
+    taskId: '',
+    taskTitle: '',
+  });
   const [filters, setFilters] = useState<TaskFiltersType>({
     page: 1,
     limit: 10,
@@ -54,16 +61,30 @@ export const Dashboard: React.FC = () => {
     setShowTaskForm(true);
   };
 
-  const handleDeleteTask = async (taskId: string) => {
-    if (window.confirm('Are you sure you want to delete this task?')) {
-      try {
-        await deleteTask(taskId);
-        // Refresh stats after deletion
-        fetchStats();
-      } catch (error) {
-        console.error('Failed to delete task:', error);
-      }
+  const handleDeleteTask = (taskId: string) => {
+    const task = tasks.find(t => t._id === taskId);
+    if (task) {
+      setDeleteDialog({
+        open: true,
+        taskId: taskId,
+        taskTitle: task.title,
+      });
     }
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      await deleteTask(deleteDialog.taskId);
+      setDeleteDialog({ open: false, taskId: '', taskTitle: '' });
+      // Refresh stats after deletion
+      fetchStats();
+    } catch (error) {
+      console.error('Failed to delete task:', error);
+    }
+  };
+
+  const handleCloseDeleteDialog = () => {
+    setDeleteDialog({ open: false, taskId: '', taskTitle: '' });
   };
 
   const handleFormSuccess = () => {
@@ -307,6 +328,21 @@ export const Dashboard: React.FC = () => {
           isOpen={showTaskForm}
           onClose={() => setShowTaskForm(false)}
           onSuccess={handleFormSuccess}
+        />
+
+        {/* Delete Confirmation Dialog */}
+        <DeleteConfirmationDialog
+          open={deleteDialog.open}
+          onClose={handleCloseDeleteDialog}
+          onConfirm={handleConfirmDelete}
+          taskTitle={deleteDialog.taskTitle}
+        />
+
+        {/* Warning Snackbar */}
+        <WarningSnackbar
+          open={!!warning}
+          message={warning || ''}
+          onClose={clearWarning}
         />
 
         {/* Floating Action Button */}

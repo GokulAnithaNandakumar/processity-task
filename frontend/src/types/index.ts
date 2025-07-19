@@ -28,6 +28,7 @@ export interface AuthResponse {
 
 export interface TaskResponse {
   status: string;
+  warning?: string;
   data: {
     task: Task;
   };
@@ -83,11 +84,13 @@ export interface TaskContextType {
   stats: TaskStats['data'] | null;
   loading: boolean;
   error: string | null;
+  warning: string | null;
   fetchTasks: (filters?: TaskFilters) => Promise<void>;
   createTask: (task: Omit<Task, '_id' | 'user' | 'createdAt' | 'updatedAt'>) => Promise<void>;
   updateTask: (id: string, task: Partial<Task>) => Promise<void>;
   deleteTask: (id: string) => Promise<void>;
   fetchStats: () => Promise<void>;
+  clearWarning: () => void;
 }
 
 export interface TaskFilters {

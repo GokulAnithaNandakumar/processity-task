@@ -7,11 +7,13 @@ interface TaskState {
   stats: TaskStats['data'] | null;
   loading: boolean;
   error: string | null;
+  warning: string | null;
 }
 
 type TaskAction =
   | { type: 'SET_LOADING'; payload: boolean }
   | { type: 'SET_ERROR'; payload: string | null }
+  | { type: 'SET_WARNING'; payload: string | null }
   | { type: 'SET_TASKS'; payload: Task[] }
   | { type: 'SET_STATS'; payload: TaskStats['data'] }
   | { type: 'ADD_TASK'; payload: Task }
@@ -23,6 +25,7 @@ const initialState: TaskState = {
   stats: null,
   loading: false,
   error: null,
+  warning: null,
 };
 
 const TaskContext = createContext<TaskContextType | undefined>(undefined);
@@ -35,6 +38,8 @@ const taskReducer = (state: TaskState, action: TaskAction): TaskState => {
       return { ...state, loading: action.payload };
     case 'SET_ERROR':
       return { ...state, error: action.payload, loading: false };
+    case 'SET_WARNING':
+      return { ...state, warning: action.payload };
     case 'SET_TASKS':
       return { ...state, tasks: action.payload, loading: false, error: null };
     case 'SET_STATS':
@@ -77,9 +82,15 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const createTask = useCallback(async (task: Omit<Task, '_id' | 'user' | 'createdAt' | 'updatedAt'>) => {
     try {
       dispatch({ type: 'SET_ERROR', payload: null });
+      dispatch({ type: 'SET_WARNING', payload: null });
 
       const response = await tasksAPI.createTask(task);
       dispatch({ type: 'ADD_TASK', payload: response.data.task });
+
+      // Check for warning in response
+      if (response.warning) {
+        dispatch({ type: 'SET_WARNING', payload: response.warning });
+      }
     } catch (error: unknown) {
       const errorMessage = (error as { response?: { data?: { message?: string } } })?.response?.data?.message || 'Failed to create task';
       dispatch({ type: 'SET_ERROR', payload: errorMessage });
@@ -90,9 +101,15 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const updateTask = useCallback(async (id: string, task: Partial<Task>) => {
     try {
       dispatch({ type: 'SET_ERROR', payload: null });
+      dispatch({ type: 'SET_WARNING', payload: null });
 
       const response = await tasksAPI.updateTask(id, task);
       dispatch({ type: 'UPDATE_TASK', payload: response.data.task });
+
+      // Check for warning in response
+      if (response.warning) {
+        dispatch({ type: 'SET_WARNING', payload: response.warning });
+      }
     } catch (error: unknown) {
       const errorMessage = (error as { response?: { data?: { message?: string } } })?.response?.data?.message || 'Failed to update task';
       dispatch({ type: 'SET_ERROR', payload: errorMessage });
@@ -125,16 +142,22 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
+  const clearWarning = useCallback(() => {
+    dispatch({ type: 'SET_WARNING', payload: null });
+  }, []);
+
   const value: TaskContextType = {
     tasks: state.tasks,
     stats: state.stats,
     loading: state.loading,
     error: state.error,
+    warning: state.warning,
     fetchTasks,
     createTask,
     updateTask,
     deleteTask,
     fetchStats,
+    clearWarning,
   };
 
   return <TaskContext.Provider value={value}>{children}</TaskContext.Provider>;

@@ -1,6 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { X } from 'lucide-react';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Button,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Alert,
+  Box,
+  IconButton,
+  CircularProgress,
+} from '@mui/material';
+import { Close } from '@mui/icons-material';
 import type { Task } from '../../types';
 import { useTask } from '../../hooks/useTask';
 
@@ -27,6 +43,8 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, isOpen, onClose, onSuc
     register,
     handleSubmit,
     reset,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
@@ -37,6 +55,20 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, isOpen, onClose, onSuc
       dueDate: task?.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : '',
     },
   });
+
+  // Watch form values for controlled components
+  const watchedStatus = watch('status');
+  const watchedPriority = watch('priority');
+
+  useEffect(() => {
+    if (task) {
+      setValue('title', task.title);
+      setValue('description', task.description || '');
+      setValue('status', task.status);
+      setValue('priority', task.priority);
+      setValue('dueDate', task.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : '');
+    }
+  }, [task, setValue]);
 
   const onSubmit = async (data: FormData) => {
     try {
@@ -67,141 +99,167 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, isOpen, onClose, onSuc
     onClose();
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto border border-gray-100">
-        <div className="flex items-center justify-between p-6 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-purple-50">
-          <h3 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            {task ? 'Edit Task' : 'Create New Task'}
-          </h3>
-          <button
-            onClick={handleClose}
-            className="text-gray-400 hover:text-gray-600 hover:bg-gray-100 p-2 rounded-lg transition-all duration-200"
-          >
-            <X className="h-5 w-5" />
-          </button>
-        </div>
+    <Dialog
+      open={isOpen}
+      onClose={handleClose}
+      maxWidth="sm"
+      fullWidth
+      PaperProps={{
+        sx: {
+          borderRadius: 2,
+          boxShadow: '0 10px 40px rgba(0,0,0,0.2)',
+        }
+      }}
+    >
+      <DialogTitle sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        pb: 1,
+        background: 'linear-gradient(135deg, #1976d2 0%, #42a5f5 100%)',
+        color: 'white'
+      }}>
+        <Box sx={{ fontWeight: 'bold', fontSize: '1.25rem' }}>
+          {task ? 'Edit Task' : 'Create New Task'}
+        </Box>
+        <IconButton
+          onClick={handleClose}
+          sx={{
+            color: 'white',
+            '&:hover': {
+              backgroundColor: 'rgba(255,255,255,0.1)'
+            }
+          }}
+        >
+          <Close />
+        </IconButton>
+      </DialogTitle>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-5">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <DialogContent sx={{ pt: 3 }}>
           {(error || submitError) && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-center">
-              <span className="text-sm">{error || submitError}</span>
-            </div>
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {error || submitError}
+            </Alert>
           )}
 
-          <div>
-            <label htmlFor="title" className="block text-sm font-semibold text-gray-700 mb-2">
-              Title *
-            </label>
-            <input
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+            <TextField
               {...register('title', {
                 required: 'Title is required',
                 minLength: { value: 1, message: 'Title is required' },
                 maxLength: { value: 100, message: 'Title cannot be more than 100 characters' }
               })}
-              type="text"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-400"
+              label="Title"
               placeholder="Enter task title"
+              fullWidth
+              error={!!errors.title}
+              helperText={errors.title?.message}
+              variant="outlined"
+              required
             />
-            {errors.title && (
-              <p className="mt-2 text-sm text-red-600">{errors.title.message}</p>
-            )}
-          </div>
 
-          <div>
-            <label htmlFor="description" className="block text-sm font-semibold text-gray-700 mb-2">
-              Description
-            </label>
-            <textarea
+            <TextField
               {...register('description', {
                 maxLength: { value: 500, message: 'Description cannot be more than 500 characters' }
               })}
-              rows={4}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-400 resize-none"
+              label="Description"
               placeholder="Enter task description"
+              fullWidth
+              multiline
+              rows={4}
+              error={!!errors.description}
+              helperText={errors.description?.message}
+              variant="outlined"
             />
-            {errors.description && (
-              <p className="mt-2 text-sm text-red-600">{errors.description.message}</p>
-            )}
-          </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="status" className="block text-sm font-semibold text-gray-700 mb-2">
-                Status *
-              </label>
-              <select
-                {...register('status', { required: 'Status is required' })}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-900 bg-white"
-              >
-                <option value="pending">Pending</option>
-                <option value="in-progress">In Progress</option>
-                <option value="completed">Completed</option>
-              </select>
-              {errors.status && (
-                <p className="mt-2 text-sm text-red-600">{errors.status.message}</p>
-              )}
-            </div>
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              <FormControl fullWidth required error={!!errors.status}>
+                <InputLabel>Status</InputLabel>
+                <Select
+                  {...register('status', { required: 'Status is required' })}
+                  value={watchedStatus}
+                  onChange={(e) => setValue('status', e.target.value as 'pending' | 'in-progress' | 'completed')}
+                  label="Status"
+                >
+                  <MenuItem value="pending">Pending</MenuItem>
+                  <MenuItem value="in-progress">In Progress</MenuItem>
+                  <MenuItem value="completed">Completed</MenuItem>
+                </Select>
+                {errors.status && (
+                  <Box sx={{ color: 'error.main', fontSize: '0.75rem', mt: 0.5, ml: 1.75 }}>
+                    {errors.status.message}
+                  </Box>
+                )}
+              </FormControl>
 
-            <div>
-              <label htmlFor="priority" className="block text-sm font-semibold text-gray-700 mb-2">
-                Priority *
-              </label>
-              <select
-                {...register('priority', { required: 'Priority is required' })}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-900 bg-white"
-              >
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
-              </select>
-              {errors.priority && (
-                <p className="mt-2 text-sm text-red-600">{errors.priority.message}</p>
-              )}
-            </div>
-          </div>
+              <FormControl fullWidth required error={!!errors.priority}>
+                <InputLabel>Priority</InputLabel>
+                <Select
+                  {...register('priority', { required: 'Priority is required' })}
+                  value={watchedPriority}
+                  onChange={(e) => setValue('priority', e.target.value as 'low' | 'medium' | 'high')}
+                  label="Priority"
+                >
+                  <MenuItem value="low">Low</MenuItem>
+                  <MenuItem value="medium">Medium</MenuItem>
+                  <MenuItem value="high">High</MenuItem>
+                </Select>
+                {errors.priority && (
+                  <Box sx={{ color: 'error.main', fontSize: '0.75rem', mt: 0.5, ml: 1.75 }}>
+                    {errors.priority.message}
+                  </Box>
+                )}
+              </FormControl>
+            </Box>
 
-          <div>
-            <label htmlFor="dueDate" className="block text-sm font-semibold text-gray-700 mb-2">
-              Due Date
-            </label>
-            <input
+            <TextField
               {...register('dueDate')}
+              label="Due Date"
               type="date"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-900"
+              fullWidth
+              InputLabelProps={{
+                shrink: true,
+              }}
+              error={!!errors.dueDate}
+              helperText={errors.dueDate?.message}
+              variant="outlined"
             />
-            {errors.dueDate && (
-              <p className="mt-2 text-sm text-red-600">{errors.dueDate.message}</p>
-            )}
-          </div>
+          </Box>
+        </DialogContent>
 
-          <div className="flex justify-end space-x-3 pt-6 border-t border-gray-100">
-            <button
-              type="button"
-              onClick={handleClose}
-              className="px-6 py-3 border border-gray-300 rounded-lg text-sm font-semibold text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={loading}
-              className="px-6 py-3 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-[1.02] shadow-lg"
-            >
-              {loading ? (
-                <div className="flex items-center">
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  Saving...
-                </div>
-              ) : (
-                task ? 'Update Task' : 'Create Task'
-              )}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+        <DialogActions sx={{ p: 3, pt: 2 }}>
+          <Button
+            onClick={handleClose}
+            variant="outlined"
+            sx={{
+              textTransform: 'none',
+              fontWeight: 600,
+              px: 3
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            variant="contained"
+            disabled={loading}
+            sx={{
+              textTransform: 'none',
+              fontWeight: 600,
+              px: 3,
+              background: 'linear-gradient(135deg, #1976d2 0%, #42a5f5 100%)',
+              '&:hover': {
+                background: 'linear-gradient(135deg, #1565c0 0%, #1976d2 100%)',
+              }
+            }}
+            startIcon={loading ? <CircularProgress size={16} color="inherit" /> : null}
+          >
+            {loading ? 'Saving...' : (task ? 'Update Task' : 'Create Task')}
+          </Button>
+        </DialogActions>
+      </form>
+    </Dialog>
   );
 };

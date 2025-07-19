@@ -1,5 +1,17 @@
 import React from 'react';
-import { Search, Filter } from 'lucide-react';
+import {
+  Box,
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Card,
+  CardContent,
+  Typography,
+  InputAdornment,
+} from '@mui/material';
+import { Search, FilterList } from '@mui/icons-material';
 import type { TaskFilters as TaskFiltersType } from '../../types';
 
 interface TaskFiltersProps {
@@ -38,92 +50,169 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-6 mb-8">
-      <div className="flex items-center gap-3 mb-6">
-        <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-2 rounded-lg">
-          <Filter className="h-5 w-5 text-white" />
-        </div>
-        <h3 className="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-          Filters & Search
-        </h3>
-      </div>
+    <Card
+      sx={{
+        mb: 4,
+        background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+        boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
+      }}
+    >
+      <CardContent sx={{ p: 3 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
+          <Box
+            sx={{
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              p: 1.5,
+              borderRadius: 2,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <FilterList sx={{ color: 'white', fontSize: 20 }} />
+          </Box>
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: 'bold',
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}
+          >
+            Filters & Search
+          </Typography>
+        </Box>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {/* Search */}
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Search Tasks
-          </label>
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-            <input
-              type="text"
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: {
+              xs: '1fr',
+              md: 'repeat(2, 1fr)',
+              lg: 'repeat(4, 1fr)',
+            },
+            gap: 3,
+          }}
+        >
+          {/* Search */}
+          <Box>
+            <TextField
+              fullWidth
+              label="Search Tasks"
               value={searchQuery}
               onChange={(e) => onSearch(e.target.value)}
-              className="pl-10 w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-400"
               placeholder="Search by title..."
+              variant="outlined"
+              size="small"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Search sx={{ color: 'action.active' }} />
+                  </InputAdornment>
+                ),
+              }}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  backgroundColor: 'white',
+                  '&:hover .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'primary.main',
+                  },
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'primary.main',
+                  },
+                },
+              }}
             />
-          </div>
-        </div>
+          </Box>
 
-        {/* Status Filter */}
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Status
-          </label>
-          <select
-            value={filters.status || 'all'}
-            onChange={(e) => handleStatusChange(e.target.value)}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-900 bg-white"
-          >
-            <option value="all">All Status</option>
-            <option value="pending">Pending</option>
-            <option value="in-progress">In Progress</option>
-            <option value="completed">Completed</option>
-          </select>
-        </div>
+          {/* Status Filter */}
+          <Box>
+            <FormControl fullWidth size="small">
+              <InputLabel>Status</InputLabel>
+              <Select
+                value={filters.status || 'all'}
+                onChange={(e) => handleStatusChange(e.target.value)}
+                label="Status"
+                sx={{
+                  backgroundColor: 'white',
+                  '&:hover .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'primary.main',
+                  },
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'primary.main',
+                  },
+                }}
+              >
+                <MenuItem value="all">All Status</MenuItem>
+                <MenuItem value="pending">Pending</MenuItem>
+                <MenuItem value="in-progress">In Progress</MenuItem>
+                <MenuItem value="completed">Completed</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
 
-        {/* Priority Filter */}
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Priority
-          </label>
-          <select
-            value={filters.priority || 'all'}
-            onChange={(e) => handlePriorityChange(e.target.value)}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-900 bg-white"
-          >
-            <option value="all">All Priorities</option>
-            <option value="high">High</option>
-            <option value="medium">Medium</option>
-            <option value="low">Low</option>
-          </select>
-        </div>
+          {/* Priority Filter */}
+          <Box>
+            <FormControl fullWidth size="small">
+              <InputLabel>Priority</InputLabel>
+              <Select
+                value={filters.priority || 'all'}
+                onChange={(e) => handlePriorityChange(e.target.value)}
+                label="Priority"
+                sx={{
+                  backgroundColor: 'white',
+                  '&:hover .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'primary.main',
+                  },
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'primary.main',
+                  },
+                }}
+              >
+                <MenuItem value="all">All Priorities</MenuItem>
+                <MenuItem value="high">High</MenuItem>
+                <MenuItem value="medium">Medium</MenuItem>
+                <MenuItem value="low">Low</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
 
-        {/* Sort */}
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Sort By
-          </label>
-          <select
-            value={`${filters.sortBy || 'createdAt'}-${filters.sortOrder || 'desc'}`}
-            onChange={(e) => {
-              const [sortBy, sortOrder] = e.target.value.split('-');
-              handleSortChange(sortBy, sortOrder);
-            }}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-900 bg-white"
-          >
-            <option value="createdAt-desc">Newest First</option>
-            <option value="createdAt-asc">Oldest First</option>
-            <option value="dueDate-asc">Due Date (Earliest)</option>
-            <option value="dueDate-desc">Due Date (Latest)</option>
-            <option value="title-asc">Title (A-Z)</option>
-            <option value="title-desc">Title (Z-A)</option>
-            <option value="priority-desc">Priority (High-Low)</option>
-            <option value="priority-asc">Priority (Low-High)</option>
-          </select>
-        </div>
-      </div>
-    </div>
+          {/* Sort */}
+          <Box>
+            <FormControl fullWidth size="small">
+              <InputLabel>Sort By</InputLabel>
+              <Select
+                value={`${filters.sortBy || 'createdAt'}-${filters.sortOrder || 'desc'}`}
+                onChange={(e) => {
+                  const [sortBy, sortOrder] = e.target.value.split('-');
+                  handleSortChange(sortBy, sortOrder);
+                }}
+                label="Sort By"
+                sx={{
+                  backgroundColor: 'white',
+                  '&:hover .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'primary.main',
+                  },
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'primary.main',
+                  },
+                }}
+              >
+                <MenuItem value="createdAt-desc">Newest First</MenuItem>
+                <MenuItem value="createdAt-asc">Oldest First</MenuItem>
+                <MenuItem value="dueDate-asc">Due Date (Earliest)</MenuItem>
+                <MenuItem value="dueDate-desc">Due Date (Latest)</MenuItem>
+                <MenuItem value="title-asc">Title (A-Z)</MenuItem>
+                <MenuItem value="title-desc">Title (Z-A)</MenuItem>
+                <MenuItem value="priority-desc">Priority (High-Low)</MenuItem>
+                <MenuItem value="priority-asc">Priority (Low-High)</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+        </Box>
+      </CardContent>
+    </Card>
   );
 };

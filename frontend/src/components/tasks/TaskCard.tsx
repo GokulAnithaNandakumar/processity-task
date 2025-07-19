@@ -1,5 +1,20 @@
 import React from 'react';
-import { Calendar, Clock, Edit, Trash2, AlertCircle } from 'lucide-react';
+import {
+  Card,
+  CardContent,
+  Typography,
+  Box,
+  Chip,
+  IconButton,
+  Tooltip,
+} from '@mui/material';
+import {
+  Edit,
+  Delete,
+  Warning,
+  CalendarToday,
+  Schedule,
+} from '@mui/icons-material';
 import type { Task } from '../../types';
 
 interface TaskCardProps {
@@ -12,26 +27,26 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onEdit, onDelete }) =>
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'high':
-        return 'bg-gradient-to-r from-red-100 to-red-200 text-red-700 border-red-200';
+        return { color: 'error' as const, bg: '#ffebee' };
       case 'medium':
-        return 'bg-gradient-to-r from-yellow-100 to-yellow-200 text-yellow-700 border-yellow-200';
+        return { color: 'warning' as const, bg: '#fff8e1' };
       case 'low':
-        return 'bg-gradient-to-r from-green-100 to-green-200 text-green-700 border-green-200';
+        return { color: 'success' as const, bg: '#e8f5e8' };
       default:
-        return 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 border-gray-200';
+        return { color: 'default' as const, bg: '#f5f5f5' };
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'completed':
-        return 'bg-gradient-to-r from-emerald-100 to-emerald-200 text-emerald-700 border-emerald-200';
+        return { color: 'success' as const, bg: '#e8f5e8' };
       case 'in-progress':
-        return 'bg-gradient-to-r from-blue-100 to-blue-200 text-blue-700 border-blue-200';
+        return { color: 'info' as const, bg: '#e3f2fd' };
       case 'pending':
-        return 'bg-gradient-to-r from-slate-100 to-slate-200 text-slate-700 border-slate-200';
+        return { color: 'default' as const, bg: '#f5f5f5' };
       default:
-        return 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 border-gray-200';
+        return { color: 'default' as const, bg: '#f5f5f5' };
     }
   };
 
@@ -44,76 +59,175 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onEdit, onDelete }) =>
   };
 
   const isOverdue = task.dueDate && new Date(task.dueDate) < new Date() && task.status !== 'completed';
+  const wasOverdueWhenCompleted = task.dueDate && new Date(task.dueDate) < new Date() && task.status === 'completed';
+  const priorityTheme = getPriorityColor(task.priority);
+  const statusTheme = getStatusColor(task.status);
 
   return (
-    <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-6 hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] hover:border-blue-200">
-      <div className="flex items-start justify-between">
-        <div className="flex-1">
-          <div className="flex items-center gap-3 mb-3">
-            <h3 className="text-lg font-semibold text-gray-900 truncate">
-              {task.title}
-            </h3>
-            {isOverdue && (
-              <div title="Overdue" className="bg-red-100 p-1 rounded-full">
-                <AlertCircle className="h-4 w-4 text-red-500" />
-              </div>
+    <Card
+      sx={{
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        transition: 'all 0.3s ease',
+        '&:hover': {
+          transform: 'translateY(-4px)',
+          boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+        },
+        border: isOverdue
+          ? '2px solid #f44336'
+          : wasOverdueWhenCompleted
+            ? '2px solid #ff9800'
+            : '1px solid #e0e0e0',
+      }}
+    >
+      <CardContent sx={{ flexGrow: 1, p: 3 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
+          <Box sx={{ flexGrow: 1 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+              <Typography
+                variant="h6"
+                component="h3"
+                sx={{
+                  fontWeight: 'bold',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  flex: 1,
+                }}
+              >
+                {task.title}
+              </Typography>
+              {isOverdue && (
+                <Tooltip title="Overdue">
+                  <Warning color="error" fontSize="small" />
+                </Tooltip>
+              )}
+              {wasOverdueWhenCompleted && (
+                <Tooltip title="Completed after due date">
+                  <Warning sx={{ color: '#ff9800' }} fontSize="small" />
+                </Tooltip>
+              )}
+            </Box>
+
+            {task.description && (
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{
+                  mb: 2,
+                  display: '-webkit-box',
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden',
+                  lineHeight: 1.4,
+                }}
+              >
+                {task.description}
+              </Typography>
             )}
-          </div>
 
-          {task.description && (
-            <p className="text-gray-600 text-sm mb-4 line-clamp-2 leading-relaxed">
-              {task.description}
-            </p>
-          )}
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 2 }}>
+              <Chip
+                label={task.status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                color={statusTheme.color}
+                size="small"
+                sx={{
+                  fontWeight: 600,
+                  backgroundColor: statusTheme.bg,
+                }}
+              />
+              <Chip
+                label={`${task.priority.charAt(0).toUpperCase() + task.priority.slice(1)} Priority`}
+                color={priorityTheme.color}
+                size="small"
+                sx={{
+                  fontWeight: 600,
+                  backgroundColor: priorityTheme.bg,
+                }}
+              />
+            </Box>
 
-          <div className="flex flex-wrap gap-3 mb-4">
-            <span
-              className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(
-                task.status
-              )}`}
-            >
-              {task.status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
-            </span>
-            <span
-              className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border ${getPriorityColor(
-                task.priority
-              )}`}
-            >
-              {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)} Priority
-            </span>
-          </div>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+              {task.dueDate && (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1,
+                    p: 1,
+                    borderRadius: 1,
+                    backgroundColor: isOverdue
+                      ? '#ffebee'
+                      : wasOverdueWhenCompleted
+                        ? '#fff3e0'
+                        : '#f5f5f5',
+                    color: isOverdue
+                      ? '#d32f2f'
+                      : wasOverdueWhenCompleted
+                        ? '#f57c00'
+                        : 'text.secondary'
+                  }}
+                >
+                  <CalendarToday fontSize="small" />
+                  <Typography variant="caption" sx={{ fontWeight: 600 }}>
+                    Due {formatDate(task.dueDate)}
+                    {wasOverdueWhenCompleted && ' (completed late)'}
+                  </Typography>
+                </Box>
+              )}
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1,
+                  p: 1,
+                  borderRadius: 1,
+                  backgroundColor: '#f5f5f5'
+                }}
+              >
+                <Schedule fontSize="small" />
+                <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 500 }}>
+                  Created {formatDate(task.createdAt)}
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
 
-          <div className="flex items-center gap-4 text-sm text-gray-500">
-            {task.dueDate && (
-              <div className={`flex items-center gap-2 px-2 py-1 rounded-lg ${isOverdue ? 'bg-red-50 text-red-600' : 'bg-gray-50'}`}>
-                <Calendar className="h-4 w-4" />
-                <span className="font-medium">Due {formatDate(task.dueDate)}</span>
-              </div>
-            )}
-            <div className="flex items-center gap-2 px-2 py-1 rounded-lg bg-gray-50">
-              <Clock className="h-4 w-4" />
-              <span className="font-medium">Created {formatDate(task.createdAt)}</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2 ml-4">
-          <button
-            onClick={() => onEdit(task)}
-            className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 transform hover:scale-110"
-            title="Edit task"
-          >
-            <Edit className="h-4 w-4" />
-          </button>
-          <button
-            onClick={() => onDelete(task._id)}
-            className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 transform hover:scale-110"
-            title="Delete task"
-          >
-            <Trash2 className="h-4 w-4" />
-          </button>
-        </div>
-      </div>
-    </div>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, ml: 2 }}>
+            <Tooltip title="Edit task">
+              <IconButton
+                onClick={() => onEdit(task)}
+                color="primary"
+                size="small"
+                sx={{
+                  '&:hover': {
+                    backgroundColor: 'primary.light',
+                    color: 'white',
+                  }
+                }}
+              >
+                <Edit fontSize="small" />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Delete task">
+              <IconButton
+                onClick={() => onDelete(task._id)}
+                color="error"
+                size="small"
+                sx={{
+                  '&:hover': {
+                    backgroundColor: 'error.light',
+                    color: 'white',
+                  }
+                }}
+              >
+                <Delete fontSize="small" />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        </Box>
+      </CardContent>
+    </Card>
   );
 };

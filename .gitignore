@@ -6,6 +6,16 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+# Build outputs
+build/
+dist/
+dist-ssr/
+*.tsbuildinfo
+
+# Vite build cache
+.vite/
+.parcel-cache/
+
 # Runtime data
 pids
 *.pid

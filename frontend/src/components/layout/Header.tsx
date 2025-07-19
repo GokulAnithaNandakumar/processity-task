@@ -33,7 +33,7 @@ export const Header: React.FC = () => {
             color="inherit"
             onClick={logout}
             startIcon={<LogOut size={18} />}
-            sx={{ 
+            sx={{
               textTransform: 'none',
               '&:hover': {
                 backgroundColor: 'rgba(255, 255, 255, 0.1)',
