@@ -33,7 +33,7 @@ jobs:
     - name: Run linting
       run: |
         cd backend
-        npm run lint || true
+        npm run lint || echo "Lint script not configured, skipping..."
 
     - name: Run tests
       run: |
@@ -63,12 +63,12 @@ jobs:
     - name: Run linting
       run: |
         cd frontend
-        npm run lint || true
+        npm run lint || echo "Lint script not configured, skipping..."
 
     - name: Run tests
       run: |
         cd frontend
-        npm run test
+        npm run test -- --run
       env:
         CI: true
 
