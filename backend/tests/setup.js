@@ -13,16 +13,8 @@ beforeAll(async () => {
   await connectTestDB();
 
   // Suppress console logs during tests unless debugging
-  if (!process.env.DEBUG_TESTS) {
-    global.console = {
-      ...console,
-      log: jest.fn(),
-      debug: jest.fn(),
-      info: jest.fn(),
-      warn: jest.fn(),
-      error: jest.fn(),
-    };
-  }
+  // Temporarily enable console for debugging
+  console.log('🔧 Test setup: Console logging enabled for debugging');
 });
 
 // Clean up after each test - DISABLED for now to avoid conflicts

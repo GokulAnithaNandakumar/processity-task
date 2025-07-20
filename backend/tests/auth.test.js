@@ -26,6 +26,14 @@ describe('Auth API Endpoints', () => {
         .post('/api/auth/register')
         .send(userData);
 
+      // Debug logging for failures
+      if (response.status !== 201) {
+        console.log('❌ Register test failed:');
+        console.log('Status:', response.status);
+        console.log('Response body:', JSON.stringify(response.body, null, 2));
+        console.log('Response text:', response.text);
+      }
+
       expect(response.status).toBe(201);
       expect(response.body.status).toBe('success');
       expect(response.body.token).toBeDefined();
@@ -87,6 +95,15 @@ describe('Auth API Endpoints', () => {
           email: testUserEmail,
           password: 'testpass123'
         });
+
+      // Debug logging for failures
+      if (response.status !== 200) {
+        console.log('❌ Login test failed:');
+        console.log('Status:', response.status);
+        console.log('Response body:', JSON.stringify(response.body, null, 2));
+        console.log('Response text:', response.text);
+        console.log('Test user email:', testUserEmail);
+      }
 
       expect(response.status).toBe(200);
       expect(response.body.status).toBe('success');
