@@ -39,28 +39,32 @@ jobs:
         run: cd backend && npm test -- --testPathPattern="connection.test.js"
         env:
           NODE_ENV: test
-          JWT_SECRET: 093b881caad323bfe8759c6ad0ebfb039b309ce5fd2a4c3ff30c0ee80bf7b827
+          JWT_SECRET: ${{ secrets.JWT_SECRET_TEST }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI_TEST }}
           JWT_EXPIRES_IN: 30d
 
       - name: Test - Utility Functions
         run: cd backend && npm test -- --testPathPattern="utils.test.js"
         env:
           NODE_ENV: test
-          JWT_SECRET: 093b881caad323bfe8759c6ad0ebfb039b309ce5fd2a4c3ff30c0ee80bf7b827
+          JWT_SECRET: ${{ secrets.JWT_SECRET_TEST }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI_TEST }}
           JWT_EXPIRES_IN: 30d
 
       - name: Test - Authentication
         run: cd backend && npm test -- --testPathPattern="auth.test.js"
         env:
           NODE_ENV: test
-          JWT_SECRET: 093b881caad323bfe8759c6ad0ebfb039b309ce5fd2a4c3ff30c0ee80bf7b827
+          JWT_SECRET: ${{ secrets.JWT_SECRET_TEST }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI_TEST }}
           JWT_EXPIRES_IN: 30d
 
       - name: Test - Task API
         run: cd backend && npm test -- --testPathPattern="tasks.test.js"
         env:
           NODE_ENV: test
-          JWT_SECRET: 093b881caad323bfe8759c6ad0ebfb039b309ce5fd2a4c3ff30c0ee80bf7b827
+          JWT_SECRET: ${{ secrets.JWT_SECRET_TEST }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI_TEST }}
           JWT_EXPIRES_IN: 30d
 
       - name: Install production dependencies

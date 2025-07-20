@@ -82,7 +82,7 @@ jspm_packages/
 .env.staging.local
 *.env
 !.env.example
-!.env.test
+# Removed !.env.test to prevent committing test environment files
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
