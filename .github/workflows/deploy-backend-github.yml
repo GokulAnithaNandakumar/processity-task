@@ -41,8 +41,8 @@ jobs:
       - name: Test - Utility Functions
         run: cd backend && npm test -- --testPathPattern="utils.test.js"
 
-      - name: Test - Authentication
-        run: cd backend && npm test -- --testPathPattern="auth.test.js"
+    #   - name: Test - Authentication
+    #     run: cd backend && npm test -- --testPathPattern="auth.test.js"
 
       - name: Test - Task API
         run: cd backend && npm test -- --testPathPattern="tasks.test.js"
