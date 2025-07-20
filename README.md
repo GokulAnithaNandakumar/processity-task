@@ -1,103 +1,201 @@
-# Processity Task Manager
+# 🚀 Processity Task Manager
 
-A comprehensive cloud-based task management application built with modern web technologies and deployed on Azure with full CI/CD automation.
+> **A modern, full-stack task management application showcasing enterprise-grade architecture, security, and cloud deployment practices.**
 
-![Node.js](https://img.shields.io/badge/Node.js-20.x-green.svg)
-![React](https://img.shields.io/badge/React-18.x-blue.svg)
-![Azure](https://img.shields.io/badge/Azure-Cloud-blue.svg)
-![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-green.svg)
+[![Node.js](https://img.shields.io/badge/Node.js-20.x-green.svg)](https://nodejs.org/)
+[![React](https://img.shields.io/badge/React-19.x-blue.svg)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue.svg)](https://www.typescriptlang.org/)
+[![Azure](https://img.shields.io/badge/Azure-Cloud-blue.svg)](https://azure.microsoft.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-green.svg)](https://www.mongodb.com/atlas)
+[![Material-UI](https://img.shields.io/badge/Material--UI-7.x-blue.svg)](https://mui.com/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 ## 🌐 Live Deployment
 
-- **Frontend (React)**: [https://jolly-desert-0d7a9d110.1.azurestaticapps.net](https://jolly-desert-0d7a9d110.1.azurestaticapps.net)
-- **Backend API**: [https://taskmanager-api-prod-ocwrlppzw2f4s.azurewebsites.net](https://taskmanager-api-prod-ocwrlppzw2f4s.azurewebsites.net)
-- **API Health Check**: [https://taskmanager-api-prod-ocwrlppzw2f4s.azurewebsites.net/api/health](https://taskmanager-api-prod-ocwrlppzw2f4s.azurewebsites.net/api/health)
+| Service | URL | Status |
+|---------|-----|--------|
+| **Frontend (React)** | [jolly-desert-0d7a9d110.1.azurestaticapps.net](https://jolly-desert-0d7a9d110.1.azurestaticapps.net) | ✅ Live |
+| **Backend API** | [taskmanager-api-prod-ocwrlppzw2f4s.azurewebsites.net](https://taskmanager-api-prod-ocwrlppzw2f4s.azurewebsites.net) | ✅ Live |
+| **API Health Check** | [/api/health](https://taskmanager-api-prod-ocwrlppzw2f4s.azurewebsites.net/api/health) | ✅ Monitoring |
 
 ## 📋 Table of Contents
 
-- [Project Overview](#-project-overview)
-- [Architecture](#-architecture)
-- [Technology Stack](#-technology-stack)
-- [Project Structure](#-project-structure)
-- [Quick Start](#-quick-start)
-- [Frontend Implementation](#-frontend-implementation)
-- [Backend Implementation](#-backend-implementation)
-- [Testing Strategy](#-testing-strategy)
-- [Infrastructure & Deployment](#-infrastructure--deployment)
-- [CI/CD Pipeline](#-cicd-pipeline)
-- [Environment Configuration](#-environment-configuration)
-- [API Documentation](#-api-documentation)
-- [Security Features](#-security-features)
-- [Monitoring & Logging](#-monitoring--logging)
-- [Development Workflow](#-development-workflow)
-- [Troubleshooting](#-troubleshooting)
-- [Contributing](#-contributing)
+- [🎯 Project Overview](#-project-overview)
+- [✨ Key Features](#-key-features)
+- [🏗️ Architecture](#️-architecture)
+- [🛠️ Technology Stack](#️-technology-stack)
+- [📁 Project Structure](#-project-structure)
+- [🚀 Quick Start](#-quick-start)
+- [🔧 Development](#-development)
+- [🧪 Testing](#-testing)
+- [🔒 Security](#-security)
+- [☁️ Deployment](#️-deployment)
+- [📊 Monitoring](#-monitoring)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
 
 ## 🎯 Project Overview
 
-Processity Task Manager is a full-stack web application that demonstrates modern software architecture, cloud deployment, and DevOps practices. The application allows users to create, manage, and track personal tasks with a focus on security, scalability, and user experience.
+Processity Task Manager is a comprehensive, production-ready task management application that demonstrates modern software development practices, including:
 
-### Key Features
+- **Enterprise Architecture**: Scalable, maintainable codebase with clean separation of concerns
+- **Security First**: JWT authentication, password validation, CORS protection, and secure API design
+- **Cloud Native**: Azure-hosted with global CDN, auto-scaling, and infrastructure as code
+- **Developer Experience**: Hot reloading, TypeScript, comprehensive testing, and CI/CD automation
+- **User Experience**: Responsive design, loading states, error handling, and accessibility features
 
-- ✅ **User Authentication**: Secure JWT-based authentication with bcrypt password hashing
-- 📝 **Task Management**: Complete CRUD operations for tasks (Create, Read, Update, Delete)
-- 🔒 **Security**: Protected routes, input validation, and secure API endpoints
-- ☁️ **Cloud Deployment**: Azure-hosted with auto-scaling and global distribution
-- 🚀 **CI/CD Pipeline**: Automated testing and deployment via GitHub Actions
-- 📊 **Monitoring**: Application Insights integration with real-time metrics
-- 🧪 **Comprehensive Testing**: 38 backend tests + frontend test coverage
-- 📱 **PWA Ready**: Progressive Web App features with custom favicon
+## ✨ Key Features
+
+### 🔐 **Authentication & Security**
+- **JWT-based Authentication** with secure token management
+- **Strong Password Validation** (uppercase, lowercase, numbers, special characters)
+- **Protected Routes** with automatic redirects
+- **Secure Password Hashing** using bcrypt
+- **Input Validation & Sanitization** across all endpoints
+
+### 📝 **Task Management**
+- **Full CRUD Operations** (Create, Read, Update, Delete)
+- **Task Status Tracking** (Pending, In Progress, Completed)
+- **Priority Levels** (Low, Medium, High)
+- **Due Date Management** with overdue detection
+- **Advanced Filtering** by status, priority, and date
+- **Real-time Task Statistics** dashboard
+
+### 🎨 **User Experience**
+- **Material-UI Design System** with consistent theming
+- **Responsive Layout** optimized for desktop and mobile
+- **Loading States** with skeleton screens and spinners
+- **Error Handling** with user-friendly messages
+- **Form Validation** with real-time feedback
+- **Progressive Web App** ready features
+
+### 🏗️ **Technical Excellence**
+- **TypeScript** for type safety and better developer experience
+- **Custom React Hooks** for reusable logic
+- **Context API** for state management
+- **Axios Interceptors** for API request/response handling
+- **Comprehensive Testing** with unit and integration tests
+- **ESLint & Prettier** for code quality
 
 ## 🏗️ Architecture
 
-```
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   React SPA     │    │   Node.js API    │    │  MongoDB Atlas  │
-│ (Static Web App)│◄──►│  (App Service)   │◄──►│   (Database)    │
-│  Port: 5173     │    │   Port: 3000     │    │   Cloud Hosted  │
-└─────────────────┘    └──────────────────┘    └─────────────────┘
-         │                        │                        │
-         ▼                        ▼                        ▼
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│ Azure Static    │    │ Azure App Service│    │ MongoDB Atlas   │
-│ Web Apps        │    │ Linux + Node.js  │    │ M0 Cluster      │
-│ Global CDN      │    │ Auto-scaling     │    │ Auto-backup     │
-└─────────────────┘    └──────────────────┘    └─────────────────┘
+```mermaid
+graph TB
+    subgraph "Client Layer"
+        A[React SPA<br/>TypeScript + Material-UI]
+    end
+
+    subgraph "API Layer"
+        B[Express.js REST API<br/>Node.js + JWT Auth]
+    end
+
+    subgraph "Data Layer"
+        C[MongoDB Atlas<br/>Cloud Database]
+    end
+
+    subgraph "Azure Cloud Infrastructure"
+        D[Azure Static Web Apps<br/>Global CDN]
+        E[Azure App Service<br/>Linux Container]
+        F[Azure Key Vault<br/>Secrets Management]
+        G[Application Insights<br/>Monitoring & Logs]
+    end
+
+    A -->|HTTPS/REST| B
+    B -->|Mongoose ODM| C
+    A -.->|Hosted on| D
+    B -.->|Deployed to| E
+    B -.->|Secrets from| F
+    E -.->|Telemetry to| G
 ```
 
-### Azure Infrastructure
+### System Architecture Principles
 
-- **Frontend**: Azure Static Web Apps with global CDN
-- **Backend**: Azure App Service (Linux) with Node.js runtime
-- **Database**: MongoDB Atlas cloud database
-- **Secrets**: Azure Key Vault for secure configuration
-- **Monitoring**: Application Insights for telemetry and logs
-- **CI/CD**: GitHub Actions for automated deployment
+- **Microservices Ready**: Loosely coupled frontend and backend
+- **Stateless API**: JWT tokens for session management
+- **Database Separation**: Dedicated MongoDB Atlas cluster
+- **CDN Distribution**: Global content delivery for optimal performance
+- **Infrastructure as Code**: Azure Bicep templates for reproducible deployments
+- **Observability**: Comprehensive logging and monitoring
 
 ## 🛠️ Technology Stack
 
-### Frontend
-- **Framework**: React 18 with TypeScript
-- **Build Tool**: Vite for fast development and optimized builds
-- **Testing**: Vitest + React Testing Library
-- **Styling**: CSS3 with modern responsive design
-- **PWA**: Service Worker ready with manifest.json
+### Frontend Stack
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| **React** | 19.x | UI Framework with Hooks |
+| **TypeScript** | 5.x | Type Safety & Developer Experience |
+| **Material-UI** | 7.x | Design System & Components |
+| **Vite** | Latest | Build Tool & Dev Server |
+| **Axios** | 1.x | HTTP Client with Interceptors |
+| **React Router** | 6.x | Client-side Routing |
+| **Vitest** | Latest | Testing Framework |
 
-### Backend
-- **Runtime**: Node.js 20 LTS
-- **Framework**: Express.js for RESTful API
-- **Database**: MongoDB with Mongoose ODM
-- **Authentication**: JWT tokens with bcrypt password hashing
-- **Testing**: Jest with Supertest for API testing
-- **Validation**: Express-validator for input sanitization
+### Backend Stack
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| **Node.js** | 20 LTS | JavaScript Runtime |
+| **Express.js** | 4.x | Web Framework |
+| **MongoDB** | 7.x | NoSQL Database |
+| **Mongoose** | 8.x | Object Document Mapper |
+| **JSON Web Token** | 9.x | Authentication |
+| **bcryptjs** | 2.x | Password Hashing |
+| **Jest** | 29.x | Testing Framework |
 
-### Infrastructure
-- **Cloud Provider**: Microsoft Azure
-- **IaC**: Azure Bicep templates for infrastructure as code
-- **CI/CD**: GitHub Actions with automated workflows
-- **Deployment**: ZIP deployment for backend, GitHub integration for frontend
-- **Monitoring**: Azure Application Insights
-- **Security**: Azure Key Vault for secrets management
+### Infrastructure & DevOps
+| Service | Purpose |
+|---------|---------|
+| **Azure Static Web Apps** | Frontend Hosting + CDN |
+| **Azure App Service** | Backend API Hosting |
+| **MongoDB Atlas** | Managed Database Service |
+| **Azure Key Vault** | Secrets Management |
+| **Application Insights** | APM & Monitoring |
+| **GitHub Actions** | CI/CD Pipeline |
+| **Azure Bicep** | Infrastructure as Code |
+
+## � Project Structure
+
+```
+processity-task/
+├── 📁 frontend/                    # React TypeScript Application
+│   ├── 📁 src/
+│   │   ├── 📁 components/          # Reusable UI Components
+│   │   │   ├── 📁 auth/           # Authentication Components
+│   │   │   ├── 📁 common/         # Shared Components
+│   │   │   ├── 📁 layout/         # Layout Components
+│   │   │   ├── 📁 tasks/          # Task Management Components
+│   │   │   └── 📁 ui/             # UI Components (LoadingButton, etc.)
+│   │   ├── 📁 contexts/           # React Context Providers
+│   │   ├── 📁 hooks/              # Custom React Hooks
+│   │   ├── 📁 pages/              # Page Components
+│   │   ├── 📁 services/           # API Service Layer
+│   │   ├── 📁 types/              # TypeScript Type Definitions
+│   │   └── 📁 tests/              # Test Files
+│   ├── 📄 package.json            # Dependencies & Scripts
+│   ├── 📄 vite.config.ts          # Vite Configuration
+│   ├── 📄 tsconfig.json           # TypeScript Configuration
+│   └── 📄 vitest.config.ts        # Testing Configuration
+├── 📁 backend/                     # Node.js Express API
+│   ├── 📁 routes/                 # API Route Handlers
+│   ├── 📁 models/                 # Mongoose Data Models
+│   ├── 📁 middleware/             # Express Middleware
+│   ├── 📁 utils/                  # Utility Functions
+│   ├── 📁 config/                 # Configuration Files
+│   ├── 📁 tests/                  # API Test Suite
+│   ├── 📄 server.js               # Application Entry Point
+│   └── 📄 package.json            # Dependencies & Scripts
+├── 📁 infrastructure/             # Azure Bicep Templates
+│   ├── 📄 main.bicep              # Main Infrastructure Template
+│   ├── 📄 app-service.bicep       # App Service Configuration
+│   └── 📄 static-web-app.bicep    # Static Web App Configuration
+├── 📁 .github/workflows/          # GitHub Actions CI/CD
+│   ├── 📄 backend-deploy.yml      # Backend Deployment
+│   └── 📄 frontend-deploy.yml     # Frontend Deployment
+├── 📁 docs/                       # Project Documentation
+│   ├── 📄 API.md                  # API Documentation
+│   ├── 📄 DEPLOYMENT.md           # Deployment Guide
+│   └── 📄 TESTING.md              # Testing Strategy
+└── 📄 README.md                   # Project Overview (This File)
+```
 - **React 18** with TypeScript
 - **Vite** for fast development and building
 - **Tailwind CSS** for responsive styling
@@ -128,58 +226,622 @@ Processity Task Manager is a full-stack web application that demonstrates modern
 - **Azure Bicep** for Infrastructure as Code
 - **GitHub Actions** for CI/CD automation
 
-## 🚀 Getting Started
+## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 20 or higher
-- npm or yarn
-- MongoDB Atlas account
-- Azure CLI (for deployment)
-- Git for version control
 
-### Local Development
+Before you begin, ensure you have the following installed:
 
-1. **Clone the repository**
+- **Node.js** 20.x or higher ([Download](https://nodejs.org/))
+- **npm** 10.x or higher (comes with Node.js)
+- **Git** ([Download](https://git-scm.com/))
+- **MongoDB Atlas Account** ([Sign up](https://www.mongodb.com/atlas))
+
+### Local Development Setup
+
+1. **Clone the Repository**
    ```bash
    git clone https://github.com/GokulAnithaNandakumar/processity-task.git
    cd processity-task
    ```
 
-2. **Setup Backend**
+2. **Backend Setup**
    ```bash
    cd backend
    npm install
+
+   # Copy environment template and configure
    cp .env.example .env
-   # Edit .env with your MongoDB Atlas connection string
-   npm run dev  # Starts on port 3000
+   # Edit .env with your MongoDB connection string and JWT secret
    ```
 
-3. **Setup Frontend**
+3. **Frontend Setup**
+   ```bash
+   cd ../frontend
+   npm install
+
+   # Copy environment template and configure
+   cp .env.example .env
+   # Edit .env with your backend API URL
+   ```
+
+4. **Start Development Servers**
+
+   **Terminal 1 - Backend:**
+   ```bash
+   cd backend
+   npm run dev
+   # Server runs on http://localhost:3000
+   ```
+
+   **Terminal 2 - Frontend:**
    ```bash
    cd frontend
-   npm install
-   cp .env.example .env
-   # Edit .env with backend API URL
-   npm run dev  # Starts on port 5173
+   npm run dev
+   # App runs on http://localhost:5173
    ```
 
-4. **Environment Variables**
+5. **Access the Application**
+   - Frontend: http://localhost:5173
+   - Backend API: http://localhost:3000
+   - API Health Check: http://localhost:3000/api/health
 
-   Backend (.env):
-   ```env
-   PORT=3000
-   NODE_ENV=development
-   MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/taskmanager
-   JWT_SECRET=your-super-secret-jwt-key-minimum-32-characters
-   CLIENT_URL=http://localhost:5173
+### Environment Configuration
+
+#### Backend (.env)
+```env
+# Database
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/taskmanager
+
+# Authentication
+JWT_SECRET=your-super-secret-jwt-key-here
+JWT_EXPIRE=7d
+
+# Server
+NODE_ENV=development
+PORT=3000
+
+# Security
+BCRYPT_ROUNDS=12
+```
+
+#### Frontend (.env)
+```env
+# API Configuration
+VITE_API_URL=http://localhost:3000/api
+
+# Environment
+VITE_NODE_ENV=development
+```
+
+## 🔧 Development
+
+### Available Scripts
+
+#### Backend Scripts
+```bash
+npm run dev          # Start development server with nodemon
+npm run start        # Start production server
+npm run test         # Run test suite
+npm run test:watch   # Run tests in watch mode
+npm run test:coverage # Generate coverage report
+npm run lint         # Run ESLint
+```
+
+#### Frontend Scripts
+```bash
+npm run dev          # Start Vite development server
+npm run build        # Build for production
+npm run preview      # Preview production build
+npm run test         # Run Vitest tests
+npm run test:ui      # Run tests with UI
+npm run test:coverage # Generate coverage report
+npm run lint         # Run ESLint
+```
+
+### Development Workflow
+
+1. **Feature Development**
+   ```bash
+   git checkout -b feature/your-feature-name
+   # Make your changes
+   git add .
+   git commit -m "feat: add your feature description"
+   git push origin feature/your-feature-name
    ```
 
-   Frontend (.env):
-   ```env
-   VITE_API_URL=http://localhost:3000/api
+2. **Testing**
+   ```bash
+   # Backend tests
+   cd backend && npm test
+
+   # Frontend tests
+   cd frontend && npm test
    ```
 
-### Cloud Deployment (How We Actually Did It)
+3. **Code Quality**
+   ```bash
+   # Lint and format
+   npm run lint
+
+   # Type checking
+   npm run type-check
+   ```
+
+### VS Code Extensions (Recommended)
+
+- **ES7+ React/Redux/React-Native snippets**
+- **TypeScript Importer**
+- **ESLint**
+- **Prettier**
+- **Auto Rename Tag**
+- **Bracket Pair Colorizer**
+- **Material Icon Theme**
+
+## 🧪 Testing
+
+### Testing Strategy
+
+Our comprehensive testing approach includes:
+
+#### Backend Testing (Jest + Supertest)
+- **Unit Tests**: Individual function testing
+- **Integration Tests**: API endpoint testing
+- **Database Tests**: MongoDB integration testing
+- **Authentication Tests**: JWT and bcrypt testing
+
+```bash
+cd backend
+npm test                    # Run all tests
+npm run test:watch         # Watch mode
+npm run test:coverage      # Coverage report
+```
+
+**Test Coverage:**
+- ✅ Authentication routes (register, login)
+- ✅ Task CRUD operations
+- ✅ Middleware (auth, validation)
+- ✅ Database operations
+- ✅ Error handling
+
+#### Frontend Testing (Vitest + React Testing Library)
+- **Component Tests**: UI component behavior
+- **Hook Tests**: Custom React hooks
+- **Integration Tests**: User workflow testing
+- **API Integration**: Service layer testing
+
+```bash
+cd frontend
+npm test                    # Run all tests
+npm run test:ui            # Interactive UI
+npm run test:coverage      # Coverage report
+```
+
+**Test Coverage:**
+- ✅ Authentication components
+- ✅ Task management components
+- ✅ Custom hooks (useAuth, useTask)
+- ✅ API service functions
+- ✅ Form validation
+
+### Example Test Files
+
+**Backend Test Example:**
+```javascript
+// tests/auth.test.js
+describe('Authentication', () => {
+  it('should register a new user', async () => {
+    const response = await request(app)
+      .post('/api/auth/register')
+      .send({
+        name: 'Test User',
+        email: 'test@example.com',
+        password: 'SecurePass123!',
+        confirmPassword: 'SecurePass123!'
+      });
+
+    expect(response.status).toBe(201);
+    expect(response.body.data.user.email).toBe('test@example.com');
+  });
+});
+```
+
+**Frontend Test Example:**
+```typescript
+// src/tests/LoginForm.test.tsx
+describe('LoginForm', () => {
+  it('should submit form with valid credentials', async () => {
+    render(<LoginForm />);
+
+    fireEvent.change(screen.getByLabelText(/email/i), {
+      target: { value: 'test@example.com' }
+    });
+    fireEvent.change(screen.getByLabelText(/password/i), {
+      target: { value: 'password123' }
+    });
+    fireEvent.click(screen.getByRole('button', { name: /login/i }));
+
+    await waitFor(() => {
+      expect(mockLogin).toHaveBeenCalledWith('test@example.com', 'password123');
+    });
+  });
+});
+```
+
+## 🔒 Security
+
+### Authentication & Authorization
+
+- **JWT Tokens**: Stateless authentication with secure token management
+- **Password Security**: bcrypt hashing with configurable salt rounds
+- **Protected Routes**: Middleware-based route protection
+- **Token Expiration**: Configurable token lifetimes
+- **Automatic Logout**: Invalid token detection and cleanup
+
+### Input Validation & Sanitization
+
+- **Express Validator**: Server-side input validation
+- **Schema Validation**: MongoDB schema constraints
+- **XSS Protection**: Input sanitization to prevent cross-site scripting
+- **SQL Injection**: NoSQL injection prevention
+- **Rate Limiting**: API endpoint protection against abuse
+
+### Infrastructure Security
+
+- **HTTPS Everywhere**: TLS encryption for all communications
+- **CORS Configuration**: Proper cross-origin resource sharing setup
+- **Security Headers**: Helmet.js for security headers
+- **Environment Variables**: Secure secrets management
+- **Azure Key Vault**: Cloud-based secrets storage
+
+### Password Requirements
+
+Strong password validation enforced:
+- Minimum 8 characters
+- At least one uppercase letter
+- At least one lowercase letter
+- At least one number
+- At least one special character (@$!%*?&)
+
+### Security Best Practices Implemented
+
+```typescript
+// JWT Token Management
+const authMiddleware = async (req, res, next) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) return res.status(401).json({ message: 'No token provided' });
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = await User.findById(decoded.id);
+    next();
+  } catch (error) {
+    return res.status(401).json({ message: 'Invalid token' });
+  }
+};
+
+// Password Validation
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+```
+
+## ☁️ Deployment
+
+### Azure Cloud Architecture
+
+Our application is deployed using a modern cloud architecture:
+
+```mermaid
+graph TB
+    subgraph "Internet"
+        Users[Users]
+    end
+
+    subgraph "Azure Cloud"
+        subgraph "Frontend Tier"
+            SWA[Azure Static Web Apps<br/>Global CDN Distribution]
+        end
+
+        subgraph "Backend Tier"
+            AS[Azure App Service<br/>Linux Container<br/>Auto-scaling]
+        end
+
+        subgraph "Security Tier"
+            KV[Azure Key Vault<br/>Secrets Management]
+        end
+
+        subgraph "Monitoring Tier"
+            AI[Application Insights<br/>APM & Logging]
+        end
+    end
+
+    subgraph "External Services"
+        MA[MongoDB Atlas<br/>Global Database]
+    end
+
+    Users -->|HTTPS| SWA
+    SWA -->|API Calls| AS
+    AS -->|Secrets| KV
+    AS -->|Data| MA
+    AS -->|Telemetry| AI
+```
+
+### Deployment Configuration
+
+#### GitHub Actions CI/CD
+
+**Backend Deployment:**
+```yaml
+# .github/workflows/backend-deploy.yml
+name: Deploy Backend to Azure App Service
+on:
+  push:
+    branches: [main]
+    paths: ['backend/**']
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: cd backend && npm ci
+      - name: Run tests
+        run: cd backend && npm test
+      - name: Deploy to Azure
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'taskmanager-api-prod'
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: backend
+```
+
+**Frontend Deployment:**
+```yaml
+# .github/workflows/frontend-deploy.yml
+name: Deploy Frontend to Azure Static Web Apps
+on:
+  push:
+    branches: [main]
+    paths: ['frontend/**']
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build and Deploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "frontend"
+          output_location: "dist"
+```
+
+### Infrastructure as Code
+
+**Azure Bicep Template:**
+```bicep
+// infrastructure/main.bicep
+param appName string = 'taskmanager'
+param environment string = 'prod'
+
+module appService 'app-service.bicep' = {
+  name: 'appService'
+  params: {
+    appName: appName
+    environment: environment
+    runtime: 'NODE|20-lts'
+  }
+}
+
+module staticWebApp 'static-web-app.bicep' = {
+  name: 'staticWebApp'
+  params: {
+    appName: appName
+    environment: environment
+    repositoryUrl: 'https://github.com/GokulAnithaNandakumar/processity-task'
+  }
+}
+```
+
+### Environment Variables in Production
+
+**Azure App Service Configuration:**
+- `MONGODB_URI`: MongoDB Atlas connection string
+- `JWT_SECRET`: Secure JWT signing key
+- `NODE_ENV`: production
+- `PORT`: 3000 (or automatic)
+
+**Azure Static Web Apps Configuration:**
+- `VITE_API_URL`: Production API endpoint
+- `VITE_NODE_ENV`: production
+
+## 📊 Monitoring
+
+### Application Insights Integration
+
+Real-time monitoring and observability:
+
+- **Performance Metrics**: Response times, throughput, error rates
+- **Custom Events**: Business logic tracking
+- **Exception Handling**: Automatic error reporting
+- **User Analytics**: Session tracking and user flows
+- **Dependency Tracking**: Database and external API calls
+
+### Health Monitoring
+
+**API Health Endpoint:**
+```javascript
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    environment: process.env.NODE_ENV,
+    version: process.env.npm_package_version
+  });
+});
+```
+
+**Frontend Health Monitoring:**
+```typescript
+// Service health check
+export const checkApiHealth = async (): Promise<boolean> => {
+  try {
+    const response = await api.get('/health');
+    return response.status === 200;
+  } catch {
+    return false;
+  }
+};
+```
+
+### Performance Optimization
+
+- **Bundle Optimization**: Tree-shaking and code splitting
+- **CDN Distribution**: Global content delivery
+- **Database Indexing**: Optimized MongoDB queries
+- **Caching Strategies**: Response caching where appropriate
+- **Auto-scaling**: Horizontal scaling based on demand
+
+## 🤝 Contributing
+
+We welcome contributions to improve the Processity Task Manager! Here's how you can contribute:
+
+### Development Process
+
+1. **Fork the Repository**
+   ```bash
+   git clone https://github.com/YOUR-USERNAME/processity-task.git
+   cd processity-task
+   ```
+
+2. **Create a Feature Branch**
+   ```bash
+   git checkout -b feature/amazing-new-feature
+   ```
+
+3. **Make Your Changes**
+   - Follow the existing code style
+   - Add tests for new functionality
+   - Update documentation as needed
+
+4. **Test Your Changes**
+   ```bash
+   # Run backend tests
+   cd backend && npm test
+
+   # Run frontend tests
+   cd frontend && npm test
+
+   # Ensure builds work
+   npm run build
+   ```
+
+5. **Commit and Push**
+   ```bash
+   git add .
+   git commit -m "feat: add amazing new feature"
+   git push origin feature/amazing-new-feature
+   ```
+
+6. **Create a Pull Request**
+   - Provide a clear description of changes
+   - Reference any related issues
+   - Ensure all checks pass
+
+### Code Style Guidelines
+
+- **TypeScript**: Use strict typing, avoid `any`
+- **React**: Functional components with hooks
+- **Node.js**: Use async/await, proper error handling
+- **Testing**: Write tests for new features
+- **Documentation**: Update README and JSDoc comments
+
+### Reporting Issues
+
+If you find a bug or have a feature request:
+
+1. Check existing issues first
+2. Create a detailed issue with:
+   - Steps to reproduce
+   - Expected vs actual behavior
+   - Environment details
+   - Screenshots if applicable
+
+### Areas for Contribution
+
+- 🐛 **Bug Fixes**: Fix reported issues
+- ✨ **Features**: Add new task management features
+- 🧪 **Testing**: Improve test coverage
+- 📚 **Documentation**: Enhance docs and examples
+- 🎨 **UI/UX**: Improve user interface and experience
+- ⚡ **Performance**: Optimize application performance
+- 🔒 **Security**: Enhance security measures
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+```
+MIT License
+
+Copyright (c) 2025 Gokul Anitha Nandakumar
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+---
+
+## 🙏 Acknowledgments
+
+- **React Team** for the amazing React framework
+- **Microsoft Azure** for reliable cloud infrastructure
+- **MongoDB** for the excellent Atlas database service
+- **Material-UI** for the beautiful component library
+- **Vite** for the lightning-fast build tool
+- **TypeScript** for type safety and developer experience
+
+## 📞 Support
+
+For support and questions:
+
+- 📧 **Email**: [contact@example.com](mailto:contact@example.com)
+- 🐛 **Issues**: [GitHub Issues](https://github.com/GokulAnithaNandakumar/processity-task/issues)
+- 💬 **Discussions**: [GitHub Discussions](https://github.com/GokulAnithaNandakumar/processity-task/discussions)
+
+---
+
+<div align="center">
+
+**🚀 Built with passion for modern web development and cloud technologies**
+
+⭐ Star this repository if you found it helpful!
+
+</div>
 
 Our implementation followed this exact process:
 

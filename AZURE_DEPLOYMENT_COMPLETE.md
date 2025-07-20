@@ -2,15 +2,19 @@
 
 ## Step-by-Step Instructions for Deploying Task Manager to Azure
 
+> **🔧 This guide uses Azure Bicep for Infrastructure as Code (IaC) deployment**
+>
+> Bicep is Microsoft's domain-specific language for deploying Azure resources. It provides a cleaner syntax than ARM templates and is natively supported by Azure CLI.
+
 ### 📋 Prerequisites Checklist
 
 Before you start, ensure you have:
 
 - [ ] **Azure Account** - Free or paid subscription
-- [ ] **Azure CLI** - Installed and working
-- [ ] **Terraform** - Version 1.5.0 or later
+- [ ] **Azure CLI** - Version 2.50.0 or later (includes Bicep)
 - [ ] **GitHub Account** - Repository access
-- [ ] **Node.js 18+** - For local testing
+- [ ] **Node.js 20+** - For local development and testing
+- [ ] **Git** - For version control
 
 ---
 
@@ -18,36 +22,42 @@ Before you start, ensure you have:
 
 ### For macOS:
 ```bash
-# Install Azure CLI
+# Install Azure CLI (includes Bicep)
 brew install azure-cli
-
-# Install Terraform
-brew install terraform
 
 # Verify installations
 az --version
-terraform --version
+az bicep version
 ```
+
+### Why Bicep over Terraform?
+
+**Azure Bicep Advantages:**
+- ✅ **Native Azure Support** - Built and maintained by Microsoft
+- ✅ **Simplified Syntax** - Cleaner than ARM templates
+- ✅ **No State Management** - Azure Resource Manager handles state
+- ✅ **Built-in Validation** - Type safety and IntelliSense support
+- ✅ **Day-0 Azure Feature Support** - New Azure features available immediately
+- ✅ **No Additional Installation** - Included with Azure CLI
 
 ### For Windows:
 ```powershell
 # Using Chocolatey
-choco install azure-cli terraform
+choco install azure-cli
 
 # Or download from:
 # Azure CLI: https://docs.microsoft.com/en-us/cli/azure/install-azure-cli
-# Terraform: https://www.terraform.io/downloads.html
+# Bicep is included with Azure CLI
 ```
 
 ### For Linux (Ubuntu/Debian):
 ```bash
-# Install Azure CLI
+# Install Azure CLI (includes Bicep)
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
-# Install Terraform
-wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-sudo apt update && sudo apt install terraform
+# Verify installations
+az --version
+az bicep version
 ```
 
 ---
@@ -69,11 +79,11 @@ az account set --subscription "your-subscription-id"
 az account show
 ```
 
-### Step 2: Create Service Principal for Terraform
+### Step 2: Create Service Principal for Azure Deployment
 ```bash
 # Create service principal (save the output!)
 az ad sp create-for-rbac \
-  --name "terraform-taskmanager-$(date +%s)" \
+  --name "bicep-taskmanager-$(date +%s)" \
   --role="Contributor" \
   --scopes="/subscriptions/$(az account show --query id -o tsv)"
 ```
@@ -82,7 +92,7 @@ az ad sp create-for-rbac \
 ```json
 {
   "appId": "your-app-id",           # This is clientId
-  "displayName": "terraform-taskmanager-xxx",
+  "displayName": "bicep-taskmanager-xxx",
   "password": "your-password",      # This is clientSecret
   "tenant": "your-tenant-id"
 }
@@ -101,62 +111,107 @@ az login --service-principal \
 
 ## 🏗️ Phase 3: Configure Infrastructure
 
-### Step 1: Setup Terraform Variables
+### Step 1: Setup Bicep Parameters
 ```bash
 # Navigate to infrastructure directory
-cd infra
+cd infrastructure
 
-# Copy example terraform variables
-cp terraform.tfvars.example terraform.tfvars
+# Copy example parameters file
+cp parameters.example.json parameters.prod.json
 ```
 
-### Step 2: Edit terraform.tfvars
-Open `terraform.tfvars` and customize:
-```hcl
-app_name             = "taskmanager-yourname"  # Make this unique!
-environment         = "production"
-location            = "East US"               # Or your preferred region
-resource_group_name = "rg-taskmanager-prod"
-app_service_sku     = "B1"                   # Basic tier
-database_name       = "taskmanager"
-jwt_secret          = "your-super-secure-256-bit-jwt-secret-here"
-
-tags = {
-  Environment = "production"
-  Project     = "TaskManager"
-  ManagedBy   = "Terraform"
-  Owner       = "YourName"
+### Step 2: Edit parameters.prod.json
+Open `parameters.prod.json` and customize:
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "appName": {
+      "value": "taskmanager-yourname"
+    },
+    "environment": {
+      "value": "production"
+    },
+    "location": {
+      "value": "East US"
+    },
+    "appServiceSku": {
+      "value": "B1"
+    },
+    "databaseName": {
+      "value": "taskmanager"
+    },
+    "jwtSecret": {
+      "value": "your-super-secure-256-bit-jwt-secret-here"
+    },
+    "tags": {
+      "value": {
+        "Environment": "production",
+        "Project": "TaskManager",
+        "ManagedBy": "Bicep",
+        "Owner": "YourName"
+      }
+    }
+  }
 }
 ```
 
-### Step 3: Initialize and Plan Terraform
+### Step 3: Deploy Infrastructure with Bicep
 ```bash
-# Initialize Terraform
-terraform init
+# Create resource group
+az group create \
+  --name "rg-taskmanager-prod" \
+  --location "East US"
 
-# Plan the deployment (review what will be created)
-terraform plan
+# Validate Bicep template
+az deployment group validate \
+  --resource-group "rg-taskmanager-prod" \
+  --template-file "main.bicep" \
+  --parameters "@parameters.prod.json"
 
-# If plan looks good, apply it
-terraform apply
+# Deploy infrastructure (what-if preview)
+az deployment group what-if \
+  --resource-group "rg-taskmanager-prod" \
+  --template-file "main.bicep" \
+  --parameters "@parameters.prod.json"
+
+# If everything looks good, deploy
+az deployment group create \
+  --resource-group "rg-taskmanager-prod" \
+  --template-file "main.bicep" \
+  --parameters "@parameters.prod.json" \
+  --name "taskmanager-deployment-$(date +%Y%m%d-%H%M%S)"
 ```
 
 **Expected Resources Created:**
 - Resource Group
-- App Service Plan
-- App Service (for backend)
-- Static Web App (for frontend)
-- Cosmos DB with MongoDB API
-- Key Vault
-- Application Insights
+- App Service Plan (Linux)
+- App Service (for Node.js backend)
+- Static Web App (for React frontend)
+- MongoDB Atlas Database (managed)
+- Azure Key Vault (for secrets)
+- Application Insights (for monitoring)
 
-### Step 4: Note the Outputs
-After successful deployment, note these outputs:
+### Step 4: Note the Deployment Outputs
+After successful deployment, get important information:
 ```bash
-# Get important URLs
-terraform output backend_url
-terraform output frontend_url
-terraform output cosmos_connection_string
+# Get deployment outputs
+az deployment group show \
+  --resource-group "rg-taskmanager-prod" \
+  --name "taskmanager-deployment-latest" \
+  --query "properties.outputs"
+
+# Get specific values
+az deployment group show \
+  --resource-group "rg-taskmanager-prod" \
+  --name "taskmanager-deployment-latest" \
+  --query "properties.outputs.backendUrl.value" -o tsv
+
+az deployment group show \
+  --resource-group "rg-taskmanager-prod" \
+  --name "taskmanager-deployment-latest" \
+  --query "properties.outputs.frontendUrl.value" -o tsv
 ```
 
 ---
@@ -202,10 +257,10 @@ git push origin main
 ```
 
 The GitHub Actions workflow will automatically:
-1. Run tests
-2. Deploy infrastructure
-3. Deploy backend to App Service
-4. Deploy frontend to Static Web Apps
+1. Run tests for frontend and backend
+2. Deploy infrastructure using Bicep templates
+3. Deploy backend to Azure App Service
+4. Deploy frontend to Azure Static Web Apps
 
 ### Method 2: Manual Deployment
 If you prefer manual deployment:
@@ -280,9 +335,10 @@ az webapp log tail \
 ### Backend Environment Variables
 Your backend will automatically use these Azure App Settings:
 - `NODE_ENV=production`
-- `MONGODB_URI` (from Cosmos DB)
-- `JWT_SECRET` (from Key Vault)
-- `CORS_ORIGIN` (frontend URL)
+- `MONGODB_URI` (from MongoDB Atlas connection string)
+- `JWT_SECRET` (from Azure Key Vault)
+- `CORS_ORIGIN` (frontend URL from Static Web Apps)
+- `PORT=8080` (default for Azure App Service)
 
 ### Frontend Environment Variables
 Set these in Static Web Apps configuration:
@@ -320,6 +376,21 @@ az appservice plan update \
 
 ## 🚨 Troubleshooting Common Issues
 
+### Bicep Deployment Issues
+```bash
+# Validate Bicep template syntax
+az bicep build --file infrastructure/main.bicep
+
+# Check for Bicep linting issues
+az bicep lint --file infrastructure/main.bicep
+
+# View detailed deployment logs
+az deployment group show \
+  --resource-group "rg-taskmanager-prod" \
+  --name "your-deployment-name" \
+  --query "properties.error"
+```
+
 ### GitHub Actions Failing
 ```bash
 # Check workflow file syntax
@@ -350,11 +421,16 @@ npm run build
 
 ### Database Connection Issues
 ```bash
-# Test Cosmos DB connection
-az cosmosdb show --name "taskmanager-yourname-cosmos" --resource-group "rg-taskmanager-prod"
-
+# Test MongoDB Atlas connection
 # Check connection string in Key Vault
-az keyvault secret show --name "cosmos-connection" --vault-name "taskmanager-yourname-kv"
+az keyvault secret show \
+  --name "mongodb-connection-string" \
+  --vault-name "taskmanager-yourname-kv"
+
+# Test database connectivity from App Service
+az webapp ssh \
+  --resource-group "rg-taskmanager-prod" \
+  --name "taskmanager-yourname-api"
 ```
 
 ---
@@ -362,13 +438,15 @@ az keyvault secret show --name "cosmos-connection" --vault-name "taskmanager-you
 ## 💰 Cost Estimation
 
 **Monthly costs (approximate):**
-- App Service B1: ~$13.14
-- Cosmos DB Serverless: ~$1-10 (usage-based)
-- Static Web Apps: Free
-- Key Vault: ~$3
-- Application Insights: Free tier
+- App Service B1 (Linux): ~$13.14
+- MongoDB Atlas M0 (Free Tier): $0
+- Static Web Apps (Free Tier): $0
+- Azure Key Vault: ~$3
+- Application Insights (Basic): Free tier
 
-**Total: ~$17-26 per month**
+**Total: ~$16-20 per month**
+
+*Note: Costs may vary based on usage and region. MongoDB Atlas M0 provides 512MB storage for free.*
 
 ---
 
@@ -388,12 +466,15 @@ After successful deployment:
 
 3. **Backup Strategy**
    ```bash
-   # Enable Cosmos DB backup
-   az cosmosdb backup policy update \
-     --account-name "taskmanager-yourname-cosmos" \
+   # MongoDB Atlas provides automated backups
+   # Configure backup retention in Atlas console
+   # Set up point-in-time recovery if needed
+
+   # For App Service, enable backup
+   az webapp config backup update \
      --resource-group "rg-taskmanager-prod" \
-     --backup-interval 240 \
-     --backup-retention 720
+     --webapp-name "taskmanager-yourname-api" \
+     --container-url "your-storage-account-url"
    ```
 
 4. **Monitoring Alerts**
