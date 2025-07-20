@@ -87,7 +87,15 @@ describe('Auth API Endpoints', () => {
 
       expect(response.status).toBe(400);
       expect(response.body.status).toBe('error');
-      expect(response.body.message).toContain('Password must contain at least one uppercase letter');
+      expect(response.body.message).toBe('Validation failed');
+      expect(response.body.errors).toBeDefined();
+      expect(response.body.errors.length).toBeGreaterThan(0);
+
+      // Check that password validation error is included
+      const passwordError = response.body.errors.find(error =>
+        error.msg.includes('Password must contain at least one uppercase letter')
+      );
+      expect(passwordError).toBeDefined();
     });
   });
 
