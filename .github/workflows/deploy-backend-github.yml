@@ -37,15 +37,27 @@ jobs:
 
       - name: Test - Database Connection
         run: cd backend && npm test -- --testPathPattern="connection.test.js"
+        env:
+          NODE_ENV: test
+          JWT_SECRET: test_jwt_secret_for_github_actions
 
       - name: Test - Utility Functions
         run: cd backend && npm test -- --testPathPattern="utils.test.js"
+        env:
+          NODE_ENV: test
+          JWT_SECRET: test_jwt_secret_for_github_actions
 
-    #   - name: Test - Authentication
-    #     run: cd backend && npm test -- --testPathPattern="auth.test.js"
+      - name: Test - Authentication
+        run: cd backend && npm test -- --testPathPattern="auth.test.js"
+        env:
+          NODE_ENV: test
+          JWT_SECRET: test_jwt_secret_for_github_actions
 
       - name: Test - Task API
         run: cd backend && npm test -- --testPathPattern="tasks.test.js"
+        env:
+          NODE_ENV: test
+          JWT_SECRET: test_jwt_secret_for_github_actions
 
       - name: Install production dependencies
         run: |
