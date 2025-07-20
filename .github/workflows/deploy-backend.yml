@@ -1,0 +1,43 @@
+name: Deploy Backend to Azure
+
+on:
+  push:
+    branches: [ main ]
+    paths: [ 'backend/**' ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: backend/package-lock.json
+
+    - name: Install dependencies
+      run: |
+        cd backend
+        npm ci --production
+
+    - name: Create deployment package
+      run: |
+        cd backend
+        # Copy production environment file as .env
+        cp .env.production .env
+        # Create a clean deployment without dev dependencies and test files
+        zip -r ../backend-deploy.zip . \
+          -x "tests/*" "*.test.js" "test-runner.js" "quick-test.js" \
+             ".env.example" ".env.test" "node_modules/.cache/*"
+
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'taskmanager-gokul-backend'
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        package: './backend-deploy.zip'

@@ -1,0 +1,84 @@
+name: Infrastructure as Code - Deploy to Azure
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'infrastructure/**'
+      - 'backend/**'
+      - 'frontend/**'
+  workflow_dispatch:
+
+env:
+  AZURE_RESOURCE_GROUP: 'rg-taskmanager-prod'
+  AZURE_LOCATION: 'East US'
+
+jobs:
+  validate:
+    name: Validate Infrastructure
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Validate Bicep template
+      run: |
+        az bicep build --file infrastructure/main.bicep
+        echo "✅ Bicep template validation successful"
+
+  deploy:
+    name: Deploy Infrastructure and Apps
+    runs-on: ubuntu-latest
+    needs: [validate]
+    environment: production
+    outputs:
+      backend-url: ${{ steps.deploy.outputs.backend-url }}
+      frontend-url: ${{ steps.deploy.outputs.frontend-url }}
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Create Resource Group
+      run: |
+        az group create \
+          --name ${{ env.AZURE_RESOURCE_GROUP }} \
+          --location "${{ env.AZURE_LOCATION }}" \
+          --tags Environment=prod Application=taskmanager
+
+    - name: Deploy Bicep template
+      id: deploy
+      run: |
+        output=$(az deployment group create \
+          --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+          --template-file infrastructure/main.bicep \
+          --parameters infrastructure/parameters.prod.json \
+          --parameters mongoConnectionString="${{ secrets.MONGODB_CONNECTION_STRING }}" \
+          --parameters jwtSecret="${{ secrets.JWT_SECRET }}" \
+          --parameters githubToken="${{ secrets.GITHUB_TOKEN }}" \
+          --output json)
+
+        backend_url=$(echo $output | jq -r '.properties.outputs.backendUrl.value')
+        frontend_url=$(echo $output | jq -r '.properties.outputs.frontendUrl.value')
+
+        echo "backend-url=$backend_url" >> $GITHUB_OUTPUT
+        echo "frontend-url=$frontend_url" >> $GITHUB_OUTPUT
+
+        echo "🚀 Infrastructure deployed successfully!"
+        echo "📱 Frontend: $frontend_url"
+        echo "🔧 Backend: $backend_url"
+
+    - name: Deployment Summary
+      run: |
+        echo "🎉 DEPLOYMENT COMPLETE!"
+        echo "🌐 Frontend: ${{ steps.deploy.outputs.frontend-url }}"
+        echo "🔧 Backend: ${{ steps.deploy.outputs.backend-url }}"
