@@ -18,8 +18,8 @@ describe('Auth API Endpoints', () => {
       const userData = {
         name: 'Test User',
         email: uniqueEmail,
-        password: 'testpass123',
-        confirmPassword: 'testpass123'
+        password: 'TestPass123!',
+        confirmPassword: 'TestPass123!'
       };
 
       const response = await request(app)
@@ -45,8 +45,8 @@ describe('Auth API Endpoints', () => {
       const userData = {
         name: 'Test User',
         email: 'invalid-email',
-        password: 'testpass123',
-        confirmPassword: 'testpass123'
+        password: 'TestPass123!',
+        confirmPassword: 'TestPass123!'
       };
 
       const response = await request(app)
@@ -61,8 +61,8 @@ describe('Auth API Endpoints', () => {
       const userData = {
         name: 'Test User',
         email: 'test@example.com',
-        password: 'testpass123',
-        confirmPassword: 'differentpass'
+        password: 'TestPass123!',
+        confirmPassword: 'DifferentPass456@'
       };
 
       const response = await request(app)
@@ -71,6 +71,23 @@ describe('Auth API Endpoints', () => {
 
       expect(response.status).toBe(400);
       expect(response.body.status).toBe('error');
+    });
+
+    it('should not register user with weak password', async () => {
+      const userData = {
+        name: 'Test User',
+        email: 'weakpass@example.com',
+        password: 'weak',
+        confirmPassword: 'weak'
+      };
+
+      const response = await request(app)
+        .post('/api/auth/register')
+        .send(userData);
+
+      expect(response.status).toBe(400);
+      expect(response.body.status).toBe('error');
+      expect(response.body.message).toContain('Password must contain at least one uppercase letter');
     });
   });
 
@@ -83,7 +100,7 @@ describe('Auth API Endpoints', () => {
       const user = new User({
         name: 'Test User',
         email: testUserEmail,
-        password: 'testpass123'
+        password: 'TestPass123!'
       });
       testUser = await user.save();
     });
@@ -93,7 +110,7 @@ describe('Auth API Endpoints', () => {
         .post('/api/auth/login')
         .send({
           email: testUserEmail,
-          password: 'testpass123'
+          password: 'TestPass123!'
         });
 
       // Debug logging for failures
@@ -118,7 +135,7 @@ describe('Auth API Endpoints', () => {
         .post('/api/auth/login')
         .send({
           email: 'nonexistent@example.com',
-          password: 'testpass123'
+          password: 'TestPass123!'
         });
 
       expect(response.status).toBe(401);
@@ -130,7 +147,7 @@ describe('Auth API Endpoints', () => {
         .post('/api/auth/login')
         .send({
           email: testUserEmail,
-          password: 'wrongpassword'
+          password: 'WrongPass456@'
         });
 
       expect(response.status).toBe(401);
