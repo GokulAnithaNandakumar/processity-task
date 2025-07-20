@@ -7,7 +7,7 @@ const morgan = require('morgan');
 const connectDB = require('./config/database');
 require('dotenv').config();
 
-// Import routes
+// Import routes - Test workflow trigger
 const authRoutes = require('./routes/auth');
 const taskRoutes = require('./routes/tasks');
 
