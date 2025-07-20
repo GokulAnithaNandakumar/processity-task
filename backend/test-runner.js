@@ -25,8 +25,8 @@ const runTests = () => {
       env: {
         ...process.env,
         NODE_ENV: 'test',
-        // Use Atlas test database
-        MONGODB_URI: 'mongodb+srv://gokul:gokul@myatlasclusteredu.tgvly.mongodb.net/taskmanager_test?retryWrites=true&w=majority&appName=myAtlasClusterEDU',
+        // Use MongoDB URI from environment variable (set in GitHub secrets or local .env.test)
+        MONGODB_URI: process.env.MONGODB_URI_TEST || process.env.MONGODB_URI || 'mongodb://localhost:27017/taskmanager_test',
         // Suppress warnings
         SUPPRESS_NO_CONFIG_WARNING: 'true'
       }

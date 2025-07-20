@@ -2,10 +2,13 @@ const mongoose = require('mongoose');
 const User = require('../models/User');
 const Task = require('../models/Task');
 
-// Test database configuration using Atlas test database (whitelisted for GitHub Actions)
+// Test database configuration using environment variables
 const connectTestDB = async () => {
   try {
-    const testDbUri = 'mongodb+srv://gokul:gokul@myatlasclusteredu.tgvly.mongodb.net/taskmanager_test?retryWrites=true&w=majority&appName=myAtlasClusterEDU';
+    // Use MongoDB URI from environment variable (set in GitHub secrets or local .env.test)
+    const testDbUri = process.env.MONGODB_URI_TEST || 
+                      process.env.MONGODB_URI || 
+                      'mongodb://localhost:27017/taskmanager_test';
 
     const options = {
       bufferCommands: false,

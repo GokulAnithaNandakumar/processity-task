@@ -124,11 +124,11 @@ resource backendApp 'Microsoft.Web/sites@2023-01-01' = {
         }
         {
           name: 'MONGODB_URI'
-          value: 'mongodb+srv://gokul:gokul@cluster.vimceyx.mongodb.net/taskmanager?retryWrites=true&w=majority&appName=Cluster'
+          value: mongoConnectionString
         }
         {
           name: 'JWT_SECRET'
-          value: 'bae500756288df8fcfed406b3e61f5b2e10f4f0628e8c38725da0effca61a11c'
+          value: jwtSecret
         }
         {
           name: 'JWT_EXPIRES_IN'
