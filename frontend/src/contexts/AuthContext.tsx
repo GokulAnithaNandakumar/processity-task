@@ -1,5 +1,6 @@
 import React, { createContext, useReducer, useEffect } from 'react';
 import type { AuthContextType, User } from '../types';
+import { isApiError } from '../types';
 import { authAPI } from '../services/api';
 
 interface AuthState {
@@ -88,8 +89,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         payload: { user, token },
       });
     } catch (error: unknown) {
-      const errorMessage = (error as any)?.response?.data?.message || 'Login failed';
+      const errorMessage = isApiError(error)
+        ? error.response?.data?.message || 'Login failed'
+        : 'Login failed';
       dispatch({ type: 'SET_ERROR', payload: errorMessage });
+      dispatch({ type: 'SET_LOADING', payload: false });
       throw new Error(errorMessage);
     }
   };
@@ -112,8 +116,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         payload: { user, token },
       });
     } catch (error: unknown) {
-      const errorMessage = (error as any)?.response?.data?.message || 'Registration failed';
+      const errorMessage = isApiError(error)
+        ? error.response?.data?.message || 'Registration failed'
+        : 'Registration failed';
       dispatch({ type: 'SET_ERROR', payload: errorMessage });
+      dispatch({ type: 'SET_LOADING', payload: false });
       throw new Error(errorMessage);
     }
   };

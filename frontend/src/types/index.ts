@@ -101,3 +101,18 @@ export interface TaskFilters {
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';
 }
+
+// Error handling types
+export interface ApiErrorResponse {
+  response?: {
+    data?: {
+      message?: string;
+    };
+    status?: number;
+  };
+  message?: string;
+}
+
+export const isApiError = (error: unknown): error is ApiErrorResponse => {
+  return typeof error === 'object' && error !== null && 'response' in error;
+};
