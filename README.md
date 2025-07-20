@@ -2,7 +2,6 @@
 
 A comprehensive cloud-based task management application built with modern web technologies and deployed on Azure with full CI/CD automation.
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Node.js](https://img.shields.io/badge/Node.js-20.x-green.svg)
 ![React](https://img.shields.io/badge/React-18.x-blue.svg)
 ![Azure](https://img.shields.io/badge/Azure-Cloud-blue.svg)
@@ -10,9 +9,9 @@ A comprehensive cloud-based task management application built with modern web te
 
 ## 🌐 Live Deployment
 
-- **Frontend (React)**: [https://brave-ground-0123456789.1.azurestaticapps.net](https://brave-ground-0123456789.1.azurestaticapps.net)
-- **Backend API**: [https://processity-task-backend.azurewebsites.net](https://processity-task-backend.azurewebsites.net)
-- **API Health Check**: [https://processity-task-backend.azurewebsites.net/api/health](https://processity-task-backend.azurewebsites.net/api/health)
+- **Frontend (React)**: [https://jolly-desert-0d7a9d110.1.azurestaticapps.net](https://jolly-desert-0d7a9d110.1.azurestaticapps.net)
+- **Backend API**: [https://taskmanager-api-prod-ocwrlppzw2f4s.azurewebsites.net](https://taskmanager-api-prod-ocwrlppzw2f4s.azurewebsites.net)
+- **API Health Check**: [https://taskmanager-api-prod-ocwrlppzw2f4s.azurewebsites.net/api/health](https://taskmanager-api-prod-ocwrlppzw2f4s.azurewebsites.net/api/health)
 
 ## 📋 Table of Contents
 
@@ -132,11 +131,11 @@ Processity Task Manager is a full-stack web application that demonstrates modern
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js 18 or higher
+- Node.js 20 or higher
 - npm or yarn
-- MongoDB (local) or Azure Cosmos DB
+- MongoDB Atlas account
 - Azure CLI (for deployment)
-- Terraform (for infrastructure)
+- Git for version control
 
 ### Local Development
 
@@ -217,7 +216,7 @@ npm test
 
 # Or run individual test suites (recommended)
 npm run test:connection  # Database connection tests (3 tests)
-npm run test:utils      # Utility function tests (14 tests)  
+npm run test:utils      # Utility function tests (14 tests)
 npm run test:auth       # Authentication tests (6 tests)
 npm run test:tasks      # Task management tests (14 tests)
 
@@ -308,7 +307,7 @@ We used **Azure Bicep** templates with **GitHub Actions** for automated infrastr
    ```bash
    # Create resource group
    az group create --name rg-taskmanager-prod --location eastus
-   
+
    # Deploy infrastructure using Bicep
    az deployment group create \
      --resource-group rg-taskmanager-prod \
@@ -340,7 +339,7 @@ We used **Azure Bicep** templates with **GitHub Actions** for automated infrastr
 
 #### Frontend Deployment (GitHub Integration):
 ```bash
-# Automated via GitHub Actions on push to main  
+# Automated via GitHub Actions on push to main
 - Build React application with Vite
 - Run frontend tests
 - Deploy to Azure Static Web Apps
@@ -357,7 +356,7 @@ Our GitHub Actions workflows provide fully automated deployment:
 2. **Test Execution**: Individual test suites to avoid interference
    ```bash
    npm run test:connection    # Database connectivity (3 tests)
-   npm run test:utils        # Utility functions (14 tests)  
+   npm run test:utils        # Utility functions (14 tests)
    npm run test:auth         # Authentication (6 tests)
    npm run test:tasks        # Task management (14 tests)
    ```
@@ -446,73 +445,306 @@ az deployment group create \
 - ✅ Database indexing for performance
 - ✅ Pagination for large datasets
 
-## 🔧 Configuration
+## 🔧 Detailed Setup & Configuration
 
-### Environment-Specific Settings
+### Prerequisites Setup
 
-**Development:**
-- Local MongoDB instance
-- Debug logging enabled
-- CORS allows localhost
-- Hot reloading enabled
+1. **Node.js Installation**:
+   ```bash
+   # Download Node.js 20 LTS from https://nodejs.org/
+   node --version  # Should show v20.x.x
+   npm --version   # Should show 10.x.x or higher
+   ```
 
-**Production:**
-- Azure Cosmos DB
-- Structured logging
-- CORS restricted to production domains
-- Performance optimizations enabled
+2. **MongoDB Atlas Setup**:
+   ```bash
+   # 1. Create account at https://cloud.mongodb.com/
+   # 2. Create a new cluster (M0 free tier)
+   # 3. Create database user with read/write access
+   # 4. Whitelist IP addresses (0.0.0.0/0 for development)
+   # 5. Get connection string: mongodb+srv://username:password@cluster.mongodb.net/
+   ```
 
-## 📈 Future Enhancements
+3. **Azure CLI Installation**:
+   ```bash
+   # macOS
+   brew install azure-cli
 
-### Planned Features
-- [ ] Real-time updates with WebSockets
-- [ ] Team collaboration features
-- [ ] File attachments for tasks
-- [ ] Advanced reporting and analytics
-- [ ] Mobile application (React Native)
-- [ ] Integration with calendar applications
-- [ ] Notification system (email/push)
+   # Windows
+   # Download from https://aka.ms/installazurecliwindows
 
-### Technical Improvements
-- [ ] Redis caching layer
-- [ ] Container deployment with Docker
-- [ ] Kubernetes orchestration
-- [ ] Advanced monitoring and alerting
-- [ ] A/B testing framework
-- [ ] Performance testing suite
+   # Linux
+   curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
-## 🐛 Known Issues & Limitations
+   # Verify installation
+   az --version
+   az login
+   ```
 
-- Search functionality is currently client-side only
-- File uploads not yet implemented
-- Limited to single-user tasks (no sharing)
-- Basic notification system
+### Local Development Setup
 
-## 🤝 Contributing
+1. **Clone and Install Dependencies**:
+   ```bash
+   # Clone the repository
+   git clone https://github.com/GokulAnithaNandakumar/processity-task.git
+   cd processity-task
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+   # Backend setup
+   cd backend
+   npm install
 
-## 📄 License
+   # Frontend setup
+   cd ../frontend
+   npm install
+   ```
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+2. **Environment Configuration**:
 
-## 👥 Team
+   **Backend Environment (`backend/.env`)**:
+   ```env
+   # Server Configuration
+   PORT=3000
+   NODE_ENV=development
 
-- **Developer:** Gokul Anitha Nandakumar
-- **Email:** [your-email@example.com]
-- **LinkedIn:** [Your LinkedIn Profile]
+   # Database Configuration
+   MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/taskmanager
+   MONGODB_TEST_URI=mongodb+srv://username:password@cluster.mongodb.net/taskmanager_test
 
-## 🙏 Acknowledgments
+   # Authentication
+   JWT_SECRET=your-super-secret-jwt-key-minimum-32-characters-long
+   JWT_EXPIRE=7d
 
-- Microsoft Azure for cloud infrastructure
-- Open source community for excellent tools and libraries
-- Processity for the challenging project requirements
+   # CORS Configuration
+   CLIENT_URL=http://localhost:5173
+
+   # Security
+   BCRYPT_SALT_ROUNDS=12
+   ```
+
+   **Frontend Environment (`frontend/.env`)**:
+   ```env
+   # API Configuration
+   VITE_API_URL=http://localhost:3000/api
+
+   # App Configuration
+   VITE_APP_TITLE=Processity Task Manager
+   VITE_APP_VERSION=1.0.0
+   ```
+
+3. **Database Setup**:
+   ```bash
+   # Backend database initialization
+   cd backend
+   npm run dev  # This will create collections automatically
+
+   # Test database setup
+   npm test  # This will run tests and verify database connection
+   ```
+
+### Running the Application
+
+1. **Development Mode**:
+   ```bash
+   # Terminal 1: Start Backend
+   cd backend
+   npm run dev
+   # Server runs on http://localhost:3000
+   # API available at http://localhost:3000/api
+
+   # Terminal 2: Start Frontend
+   cd frontend
+   npm run dev
+   # Frontend runs on http://localhost:5173
+   ```
+
+2. **Production Build**:
+   ```bash
+   # Build Frontend
+   cd frontend
+   npm run build
+   # Creates optimized build in dist/ folder
+
+   # Build Backend (for deployment)
+   cd backend
+   npm run build  # If build script exists, otherwise files are ready
+   ```
+
+### Testing Procedures
+
+1. **Backend Testing**:
+   ```bash
+   cd backend
+
+   # Run all tests (may have database conflicts)
+   npm test
+
+   # Run individual test suites (recommended)
+   npm run test:connection  # Database connectivity (3 tests)
+   npm run test:utils      # Utility functions (14 tests)
+   npm run test:auth       # Authentication flow (6 tests)
+   npm run test:tasks      # Task CRUD operations (14 tests)
+
+   # Run tests with coverage
+   npm run test:coverage
+   ```
+
+2. **Frontend Testing**:
+   ```bash
+   cd frontend
+
+   # Run all frontend tests
+   npm run test
+
+   # Run specific test types
+   npm run test:unit        # Component unit tests
+   npm run test:integration # Integration tests
+
+   # Run tests with coverage
+   npm run test:coverage
+   ```
+
+### Technology Stack Details
+
+#### Frontend Technologies
+- **React 18.2.0**: Modern UI library with hooks and functional components
+- **TypeScript 5.0**: Type-safe JavaScript development
+- **Vite 5.0**: Fast build tool and development server
+- **React Router 6.8**: Client-side routing and navigation
+- **Axios 1.6**: HTTP client for API communication
+- **React Hook Form 7.4**: Form handling and validation
+- **Vitest 1.0**: Fast testing framework
+- **React Testing Library 14.0**: Component testing utilities
+
+#### Backend Technologies
+- **Node.js 20 LTS**: JavaScript runtime environment
+- **Express.js 4.18**: Web framework for Node.js
+- **MongoDB 6.0**: NoSQL document database
+- **Mongoose 8.0**: MongoDB object modeling library
+- **JWT (jsonwebtoken 9.0)**: Authentication token generation
+- **bcryptjs 2.4**: Password hashing library
+- **express-validator 7.0**: Input validation middleware
+- **helmet 7.1**: Security headers middleware
+- **cors 2.8**: Cross-origin resource sharing
+- **dotenv 16.3**: Environment variable management
+- **Jest 29.7**: Testing framework
+- **Supertest 6.3**: HTTP testing library
+
+#### Cloud & Infrastructure
+- **Azure App Service**: Backend hosting platform
+- **Azure Static Web Apps**: Frontend hosting with CDN
+- **MongoDB Atlas**: Cloud database service
+- **Azure Key Vault**: Secrets management
+- **Azure Application Insights**: Monitoring and telemetry
+- **GitHub Actions**: CI/CD automation
+- **Azure Bicep**: Infrastructure as Code
+
+### API Endpoints Documentation
+
+#### Authentication Endpoints
+```bash
+POST /api/auth/register  # User registration
+POST /api/auth/login     # User login
+GET  /api/auth/me        # Get current user (protected)
+```
+
+#### Task Management Endpoints
+```bash
+GET    /api/tasks        # Get all user tasks (protected)
+POST   /api/tasks        # Create new task (protected)
+GET    /api/tasks/:id    # Get specific task (protected)
+PUT    /api/tasks/:id    # Update task (protected)
+DELETE /api/tasks/:id    # Delete task (protected)
+```
+
+#### Health Check
+```bash
+GET /api/health          # API health status
+```
+
+### Deployment Configuration
+
+#### Azure App Service (Backend)
+- **Runtime**: Node.js 20 LTS
+- **Platform**: Linux
+- **Deployment**: ZIP file via GitHub Actions
+- **Environment Variables**: Configured in Azure portal
+- **Scaling**: Auto-scaling enabled
+- **Health Check**: `/api/health` endpoint
+
+#### Azure Static Web Apps (Frontend)
+- **Build Tool**: Vite
+- **Deployment**: GitHub integration
+- **CDN**: Global distribution enabled
+- **Custom Domain**: Optional configuration
+- **Environment Variables**: Build-time configuration
+
+#### MongoDB Atlas
+- **Cluster**: M0 (Free tier) or M2+ for production
+- **Region**: Same as Azure resources for low latency
+- **Security**: IP whitelisting and database authentication
+- **Backup**: Automated daily backups
+- **Monitoring**: Built-in performance monitoring
+
+### Security Implementation
+
+1. **Authentication Security**:
+   - JWT tokens with 7-day expiration
+   - bcrypt password hashing with 12 salt rounds
+   - Protected route middleware
+   - User session validation
+
+2. **API Security**:
+   - CORS configuration for specific origins
+   - Rate limiting middleware
+   - Input validation and sanitization
+   - SQL injection prevention via Mongoose
+   - XSS protection through proper data handling
+
+3. **Infrastructure Security**:
+   - HTTPS enforcement in production
+   - Azure Key Vault for secrets
+   - Environment variable management
+   - Security headers via Helmet.js
+
+### Project Structure
+```
+processity-task/
+├── backend/                 # Node.js Express API
+│   ├── controllers/         # Route controllers
+│   ├── middleware/          # Custom middleware
+│   ├── models/             # Mongoose models
+│   ├── routes/             # Express routes
+│   ├── tests/              # Jest test suites
+│   ├── utils/              # Utility functions
+│   └── server.js           # Entry point
+├── frontend/               # React TypeScript app
+│   ├── public/             # Static assets
+│   ├── src/                # Source code
+│   │   ├── components/     # React components
+│   │   ├── pages/          # Page components
+│   │   ├── hooks/          # Custom hooks
+│   │   ├── utils/          # Utility functions
+│   │   └── types/          # TypeScript types
+│   └── package.json        # Dependencies
+├── .github/workflows/      # GitHub Actions CI/CD
+├── infrastructure/         # Azure Bicep templates
+└── README.md              # Project documentation
+```
 
 ---
 
-**Built with ❤️ using modern web technologies and cloud-native practices.**
+## 📝 Project Summary
+
+This Processity Task Manager is a comprehensive full-stack web application developed as a technical demonstration showcasing:
+
+- **Modern Web Development**: React 18 + TypeScript frontend with Node.js + Express backend
+- **Cloud-Native Architecture**: Azure-hosted with microservices-ready design
+- **DevOps Practices**: Complete CI/CD pipeline with automated testing and deployment
+- **Security Implementation**: JWT authentication, input validation, and secure API design
+- **Scalable Infrastructure**: Auto-scaling Azure services with global CDN distribution
+- **Quality Assurance**: 38 comprehensive backend tests with individual suite execution
+
+**Live Demo**: The application is deployed and accessible at the URLs provided in the Live Deployment section above.
+
+**Built with ❤️ using modern web technologies and cloud-native practices for Processity.**
 
