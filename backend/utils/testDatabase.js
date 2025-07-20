@@ -6,8 +6,8 @@ const Task = require('../models/Task');
 const connectTestDB = async () => {
   try {
     // Use MongoDB URI from environment variable (set in GitHub secrets or local .env.test)
-    const testDbUri = process.env.MONGODB_URI_TEST || 
-                      process.env.MONGODB_URI || 
+    const testDbUri = process.env.MONGODB_URI_TEST ||
+                      process.env.MONGODB_URI ||
                       'mongodb://localhost:27017/taskmanager_test';
 
     const options = {
