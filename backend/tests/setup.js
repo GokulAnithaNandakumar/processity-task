@@ -25,11 +25,11 @@ beforeAll(async () => {
   }
 });
 
-// Clean up after each test
-afterEach(async () => {
-  // Clean up test data to ensure test isolation
-  await cleanupTestDB();
-});
+// Clean up after each test - DISABLED for now to avoid conflicts
+// afterEach(async () => {
+//   // Clean up test data to ensure test isolation
+//   await cleanupTestDB();
+// });
 
 afterAll(async () => {
   // Disconnect from test database

@@ -33,6 +33,31 @@ jobs:
       - name: Install dependencies
         run: |
           cd backend
+          npm ci
+
+      - name: Run Database Connection Tests
+        run: |
+          cd backend
+          npm test -- --testPathPattern="connection.test.js"
+
+      - name: Run Utility Function Tests
+        run: |
+          cd backend
+          npm test -- --testPathPattern="utils.test.js"
+
+      - name: Run Authentication Tests
+        run: |
+          cd backend
+          npm test -- --testPathPattern="auth.test.js"
+
+      - name: Run Task API Tests
+        run: |
+          cd backend
+          npm test -- --testPathPattern="tasks.test.js"
+
+      - name: Install production dependencies
+        run: |
+          cd backend
           npm ci --omit=dev
 
       - name: Deploy to Azure Web App

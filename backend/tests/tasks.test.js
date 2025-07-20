@@ -17,10 +17,11 @@ describe('Tasks API Endpoints', () => {
     await User.deleteMany({});
     await Task.deleteMany({});
 
-    // Create and login user for authenticated requests
+    // Create and login user for authenticated requests with unique email
+    const uniqueEmail = `test-${Date.now()}-${Math.random().toString(36).substr(2, 9)}@example.com`;
     const user = new User({
       name: 'Test User',
-      email: 'test@example.com',
+      email: uniqueEmail,
       password: 'testpass123'
     });
     testUser = await user.save();
@@ -28,9 +29,13 @@ describe('Tasks API Endpoints', () => {
     const loginResponse = await request(app)
       .post('/api/auth/login')
       .send({
-        email: 'test@example.com',
+        email: uniqueEmail,
         password: 'testpass123'
       });
+
+    // Debug: Check if login was successful
+    expect(loginResponse.status).toBe(200);
+    expect(loginResponse.body.token).toBeDefined();
 
     authToken = loginResponse.body.token;
   });

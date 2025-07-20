@@ -1,5 +1,3 @@
-const mongoose = require('mongoose');
-
 // Import utility functions from the actual utils file
 const {
   formatDate,

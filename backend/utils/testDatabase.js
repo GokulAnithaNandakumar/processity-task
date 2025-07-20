@@ -2,22 +2,20 @@ const mongoose = require('mongoose');
 const User = require('../models/User');
 const Task = require('../models/Task');
 
-// Test database configuration
+// Test database configuration using Atlas test database
 const connectTestDB = async () => {
   try {
-    const mongoUri = process.env.MONGO_URI_TEST || 'mongodb+srv://gokul:Qpg6FepNh2Ln4g7P@taskmanager.fq3tj.mongodb.net/taskmanager_test?retryWrites=true&w=majority';
+    const testDbUri = 'mongodb+srv://gokul:gokul@myatlasclusteredu.tgvly.mongodb.net/taskmanager_test?retryWrites=true&w=majority&appName=myAtlasClusterEDU';
 
     const options = {
-      serverSelectionTimeoutMS: 60000,
-      socketTimeoutMS: 60000,
-      connectTimeoutMS: 60000,
+      bufferCommands: false,
       maxPoolSize: 10,
-      maxIdleTimeMS: 30000,
-      bufferCommands: false
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
     };
 
-    await mongoose.connect(mongoUri, options);
-    console.log('✅ Connected to test database');
+    await mongoose.connect(testDbUri, options);
+    console.log('✅ Connected to Atlas test database');
 
   } catch (error) {
     console.error('❌ Error connecting to test database:', error);
@@ -37,14 +35,12 @@ const connectTestDB = async () => {
 // Clean up test data after each test
 const cleanupTestDB = async () => {
   try {
-    // Only clean up if we're in test environment
-    if (process.env.NODE_ENV === 'test') {
-      await User.deleteMany({});
-      await Task.deleteMany({});
-      console.log('Test database cleaned up');
-    }
+    // Clear all collections
+    await User.deleteMany({});
+    await Task.deleteMany({});
+    console.log('✅ Test database cleaned up');
   } catch (error) {
-    console.error('Error cleaning up test database:', error);
+    console.error('❌ Error cleaning up test database:', error);
   }
 };
 
