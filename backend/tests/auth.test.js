@@ -14,9 +14,10 @@ describe('Auth API Endpoints', () => {
 
   describe('POST /api/auth/register', () => {
     it('should register a new user successfully', async () => {
+      const uniqueEmail = `test-${Date.now()}-${Math.random().toString(36).substr(2, 9)}@example.com`;
       const userData = {
         name: 'Test User',
-        email: 'test@example.com',
+        email: uniqueEmail,
         password: 'testpass123',
         confirmPassword: 'testpass123'
       };
@@ -66,11 +67,14 @@ describe('Auth API Endpoints', () => {
   });
 
   describe('POST /api/auth/login', () => {
+    let testUserEmail;
+
     beforeEach(async () => {
-      // Create a test user
+      // Create a test user with unique email
+      testUserEmail = `test-login-${Date.now()}-${Math.random().toString(36).substr(2, 9)}@example.com`;
       const user = new User({
         name: 'Test User',
-        email: 'test@example.com',
+        email: testUserEmail,
         password: 'testpass123'
       });
       testUser = await user.save();
@@ -80,14 +84,14 @@ describe('Auth API Endpoints', () => {
       const response = await request(app)
         .post('/api/auth/login')
         .send({
-          email: 'test@example.com',
+          email: testUserEmail,
           password: 'testpass123'
         });
 
       expect(response.status).toBe(200);
       expect(response.body.status).toBe('success');
       expect(response.body.token).toBeDefined();
-      expect(response.body.data.user.email).toBe('test@example.com');
+      expect(response.body.data.user.email).toBe(testUserEmail);
 
       authToken = response.body.token;
     });
@@ -108,7 +112,7 @@ describe('Auth API Endpoints', () => {
       const response = await request(app)
         .post('/api/auth/login')
         .send({
-          email: 'test@example.com',
+          email: testUserEmail,
           password: 'wrongpassword'
         });
 
