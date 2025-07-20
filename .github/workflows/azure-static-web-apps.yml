@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           submodules: true
-      
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -31,19 +31,13 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
 
       - name: Install dependencies
-        run: |
-          cd frontend
-          npm ci
+        run: cd frontend && npm ci
 
-      - name: Run Frontend Unit Tests
-        run: |
-          cd frontend
-          npm test -- --run --testNamePattern="Frontend Unit Tests"
+      - name: Test - Frontend Unit Tests
+        run: cd frontend && npm test -- --run --testNamePattern="Frontend Unit Tests"
 
-      - name: Run Frontend Integration Tests
-        run: |
-          cd frontend
-          npm test -- --run --testNamePattern="Frontend Integration Tests"
+      - name: Test - Frontend Integration Tests
+        run: cd frontend && npm test -- --run --testNamePattern="Frontend Integration Tests"
 
       - name: Build And Deploy
         id: builddeploy
