@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const User = require('../models/User');
 const Task = require('../models/Task');
 
-// Test database configuration using Atlas test database
+// Test database configuration using Atlas test database (whitelisted for GitHub Actions)
 const connectTestDB = async () => {
   try {
     const testDbUri = 'mongodb+srv://gokul:gokul@myatlasclusteredu.tgvly.mongodb.net/taskmanager_test?retryWrites=true&w=majority&appName=myAtlasClusterEDU';
