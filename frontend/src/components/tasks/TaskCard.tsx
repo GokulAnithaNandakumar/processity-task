@@ -27,26 +27,26 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onEdit, onDelete }) =>
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'high':
-        return { color: 'error' as const, bg: '#ffebee' };
+        return { color: 'error' as const, bg: '#c62828' }; // dark red
       case 'medium':
-        return { color: 'warning' as const, bg: '#fff8e1' };
+        return { color: 'warning' as const, bg: '#ef6c00' }; // dark orange
       case 'low':
-        return { color: 'success' as const, bg: '#e8f5e8' };
+        return { color: 'success' as const, bg: '#2e7d32' }; // dark green
       default:
-        return { color: 'default' as const, bg: '#f5f5f5' };
+        return { color: 'default' as const, bg: '#424242' }; // dark grey
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'completed':
-        return { color: 'success' as const, bg: '#e8f5e8' };
+        return { color: 'success' as const, bg: '#2e7d32' }; // dark green
       case 'in-progress':
-        return { color: 'info' as const, bg: '#e3f2fd' };
+        return { color: 'info' as const, bg: '#1565c0' }; // dark blue
       case 'pending':
-        return { color: 'default' as const, bg: '#f5f5f5' };
+        return { color: 'warning' as const, bg: '#ef6c00' }; // dark orange
       default:
-        return { color: 'default' as const, bg: '#f5f5f5' };
+        return { color: 'default' as const, bg: '#424242' }; // dark grey
     }
   };
 

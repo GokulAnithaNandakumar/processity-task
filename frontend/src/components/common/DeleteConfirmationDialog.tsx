@@ -71,7 +71,7 @@ export const DeleteConfirmationDialog: React.FC<DeleteConfirmationDialogProps> =
               variant="h6"
               sx={{
                 fontWeight: 'bold',
-                color: 'error.dark',
+                color: 'error',
                 wordBreak: 'break-word',
               }}
             >
