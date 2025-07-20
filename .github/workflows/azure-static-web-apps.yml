@@ -33,11 +33,11 @@ jobs:
       - name: Install dependencies
         run: cd frontend && npm ci
 
-      - name: Test - Frontend Unit Tests
-        run: cd frontend && npm test -- --run --testNamePattern="Frontend Unit Tests"
+      - name: Test - Frontend Simple Tests
+        run: cd frontend && npm test -- --run src/tests/simple-unit.test.tsx
 
       - name: Test - Frontend Integration Tests
-        run: cd frontend && npm test -- --run --testNamePattern="Frontend Integration Tests"
+        run: cd frontend && npm test -- --run src/tests/simple-integration.test.tsx
 
       - name: Build And Deploy
         id: builddeploy
