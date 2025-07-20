@@ -25,7 +25,7 @@ az ad sp create-for-rbac --name "github-actions" --role contributor \
 
 ### 2. MONGODB_URI
 ```
-mongodb+srv://gokul:gokul@cluster.vimceyx.mongodb.net/taskmanager?retryWrites=true&w=majority&appName=Cluster
+mongodb+srv://username:password@cluster.mongodb.net/taskmanager
 ```
 
 ### 3. JWT_SECRET

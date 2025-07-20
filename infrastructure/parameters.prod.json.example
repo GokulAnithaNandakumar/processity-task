@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environment": {
+      "value": "prod"
+    },
+    "appName": {
+      "value": "taskmanager"
+    },
+    "location": {
+      "value": "eastus"
+    },
+    "mongoConnectionString": {
+      "value": "YOUR_MONGODB_CONNECTION_STRING_HERE"
+    },
+    "jwtSecret": {
+      "value": "YOUR_JWT_SECRET_HERE"
+    },
+    "repositoryUrl": {
+      "value": "https://github.com/GokulAnithaNandakumar/processity-task"
+    },
+    "repositoryBranch": {
+      "value": "main"
+    },
+    "githubToken": {
+      "value": "YOUR_GITHUB_TOKEN_HERE"
+    }
+  }
+}

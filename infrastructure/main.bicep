@@ -20,6 +20,14 @@ param repositoryBranch string = 'main'
 @secure()
 param githubToken string = ''
 
+@description('MongoDB connection string for the database')
+@secure()
+param mongoConnectionString string
+
+@description('JWT secret key for authentication')
+@secure()
+param jwtSecret string
+
 // Variables
 var uniqueSuffix = uniqueString(resourceGroup().id)
 var appServicePlanName = '${appName}-plan-${environment}-${uniqueSuffix}'

@@ -16,7 +16,7 @@
 
 **3. Current Atlas Connection** 🌐
 ```
-mongodb+srv://gokul:gokul@myatlasclusteredu.tgvly.mongodb.net/taskmanager_test?retryWrites=true&w=majority&appName=myAtlasClusterEDU
+mongodb+srv://username:password@cluster.mongodb.net/taskmanager
 ```
 
 ## 🏃‍♂️ How to Run Tests:

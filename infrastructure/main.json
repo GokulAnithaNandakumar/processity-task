@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.36.177.2456",
-      "templateHash": "14606885584401464475"
+      "templateHash": "4773612666531128838"
     }
   },
   "parameters": {
@@ -30,18 +30,6 @@
         "description": "Azure region for deployment"
       }
     },
-    "mongoConnectionString": {
-      "type": "securestring",
-      "metadata": {
-        "description": "MongoDB connection string for the database"
-      }
-    },
-    "jwtSecret": {
-      "type": "securestring",
-      "metadata": {
-        "description": "JWT secret key for authentication"
-      }
-    },
     "repositoryUrl": {
       "type": "string",
       "defaultValue": "https://github.com/GokulAnithaNandakumar/processity-task",
@@ -62,6 +50,18 @@
       "metadata": {
         "description": "GitHub personal access token for Static Web App"
       }
+    },
+    "mongoConnectionString": {
+      "type": "securestring",
+      "metadata": {
+        "description": "MongoDB connection string for the database"
+      }
+    },
+    "jwtSecret": {
+      "type": "securestring",
+      "metadata": {
+        "description": "JWT secret key for authentication"
+      }
     }
   },
   "variables": {
@@ -69,7 +69,7 @@
     "appServicePlanName": "[format('{0}-plan-{1}-{2}', parameters('appName'), parameters('environment'), variables('uniqueSuffix'))]",
     "backendAppName": "[format('{0}-api-{1}-{2}', parameters('appName'), parameters('environment'), variables('uniqueSuffix'))]",
     "frontendAppName": "[format('{0}-web-{1}-{2}', parameters('appName'), parameters('environment'), variables('uniqueSuffix'))]",
-    "keyVaultName": "[format('{0}-kv-{1}-{2}', parameters('appName'), parameters('environment'), take(variables('uniqueSuffix'), 6))]",
+    "keyVaultName": "[format('{0}kv{1}{2}', parameters('appName'), parameters('environment'), take(variables('uniqueSuffix'), 6))]",
     "logAnalyticsName": "[format('{0}-logs-{1}-{2}', parameters('appName'), parameters('environment'), variables('uniqueSuffix'))]",
     "appInsightsName": "[format('{0}-insights-{1}-{2}', parameters('appName'), parameters('environment'), variables('uniqueSuffix'))]"
   },
@@ -170,11 +170,11 @@
             },
             {
               "name": "MONGODB_URI",
-              "value": "mongodb+srv://gokul:gokul@cluster.vimceyx.mongodb.net/taskmanager?retryWrites=true&w=majority&appName=Cluster"
+              "value": "[parameters('mongoConnectionString')]"
             },
             {
               "name": "JWT_SECRET",
-              "value": "bae500756288df8fcfed406b3e61f5b2e10f4f0628e8c38725da0effca61a11c"
+              "value": "[parameters('jwtSecret')]"
             },
             {
               "name": "JWT_EXPIRES_IN",

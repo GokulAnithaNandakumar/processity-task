@@ -8,7 +8,7 @@ We have successfully implemented comprehensive testing for both frontend and bac
 ### Configuration
 - **Test Framework**: Jest
 - **Database**: MongoDB Atlas test database
-- **Test URL**: `mongodb+srv://gokul:gokul@myatlasclusteredu.tgvly.mongodb.net/taskmanager_test?retryWrites=true&w=majority&appName=myAtlasClusterEDU`
+- **Test URL**: `mongodb+srv://username:password@cluster.mongodb.net/taskmanager`
 - **Setup**: Global test setup with database connection and cleanup
 
 ### Test Files

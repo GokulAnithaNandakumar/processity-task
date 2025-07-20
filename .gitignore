@@ -84,6 +84,10 @@ jspm_packages/
 !.env.example
 # Removed !.env.test to prevent committing test environment files
 
+# Infrastructure parameter files with real values
+**/parameters.*.json
+!**/parameters.*.json.example
+
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 .parcel-cache
