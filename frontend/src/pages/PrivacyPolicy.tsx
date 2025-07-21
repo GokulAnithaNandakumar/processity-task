@@ -406,10 +406,10 @@ export const PrivacyPolicy: React.FC = () => {
 
           <Typography variant="h6" sx={{ mt: 3, mb: 2 }}>Contact Us:</Typography>
           <Typography variant="body2" paragraph>
-            <strong>Data Protection Officer:</strong> dpo@processity.com<br />
-            <strong>Privacy Questions:</strong> privacy@processity.com<br />
-            <strong>General Support:</strong> support@processity.com<br />
-            <strong>Security Issues:</strong> security@processity.com
+            <strong>Data Protection Officer:</strong> abc@xyz.com<br />
+            <strong>Privacy Questions:</strong> abc@xyz.com<br />
+            <strong>General Support:</strong> abc@xyz.com<br />
+            <strong>Security Issues:</strong> abc@xyz.com
           </Typography>
 
           <Typography variant="h6" sx={{ mt: 3, mb: 2 }}>Policy Updates:</Typography>
@@ -433,7 +433,7 @@ export const PrivacyPolicy: React.FC = () => {
         <Typography variant="body2" color="text.secondary">
           This Privacy Policy demonstrates our commitment to protecting your personal data and complying with international privacy laws.
           <br />
-          For questions about this policy or our data practices, please contact our Data Protection Officer at dpo@processity.com
+          For questions about this policy or our data practices, please contact our Data Protection Officer at abc@xyz.com
         </Typography>
       </Box>
     </Container>
