@@ -11,7 +11,7 @@ echo "======================================"
 # Configuration
 RESOURCE_GROUP="rg-taskmanager-prod"
 LOCATION="East US"
-SUBSCRIPTION_ID="ed959e3d-29c2-4f86-b95f-1525af4de229"  # Set your subscription ID
+SUBSCRIPTION_ID="xxxx"  # Set your subscription ID
 
 # Colors for output
 RED='\033[0;31m'
