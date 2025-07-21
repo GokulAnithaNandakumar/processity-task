@@ -2,7 +2,7 @@ import requests
 import time
 
 API_URL = "https://taskmanager-api-prod-ocwrlppzw2f4s.azurewebsites.net/api/tasks"  # Replace with your actual endpoint
-TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4N2NlNGZkYWIzZDQzY2JiMWQ4NDE2MSIsImlhdCI6MTc1MzA4ODk5MywiZXhwIjoxNzUzNjkzNzkzfQ.tfCjH5s76C9RyNirR9yJJHRa22YCawUubeQBphzC-Fo"  # Replace with your valid JWT if auth is required
+TOKEN = "xxxx"
 
 headers = {
     "Authorization": f"Bearer {TOKEN}"
