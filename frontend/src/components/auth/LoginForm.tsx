@@ -108,8 +108,15 @@ export const LoginForm: React.FC = () => {
               {loading ? <CircularProgress size={24} /> : 'Login'}
             </Button>
 
-            <Box sx={{ textAlign: 'right' }}>
+            <Box sx={{ textAlign: 'center', mb: 2 }}>
               <Link to="/register">Don't have an account? Register</Link>
+            </Box>
+
+            <Box sx={{ textAlign: 'center', fontSize: '0.8rem', color: 'text.secondary' }}>
+              By using this service, you agree to our{' '}
+              <Link to="/privacy" style={{ color: 'inherit', textDecoration: 'underline' }}>
+                Privacy Policy & Terms
+              </Link>
             </Box>
           </Box>
         </Box>

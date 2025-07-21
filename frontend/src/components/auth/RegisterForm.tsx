@@ -33,7 +33,7 @@ export const RegisterForm: React.FC = () => {
     const hasLowercase = /[a-z]/.test(password);
     const hasNumber = /\d/.test(password);
     const hasSpecialChar = /[@$!%*?&]/.test(password);
-    
+
     return {
       minLength,
       hasUppercase,
@@ -121,8 +121,8 @@ export const RegisterForm: React.FC = () => {
               onChange={(e) => setPassword(e.target.value)}
               sx={{ mb: 1 }}
               error={password.length > 0 && !passwordValidation.isValid}
-              helperText={password.length > 0 && !passwordValidation.isValid ? 
-                "Password must contain at least 8 characters, including uppercase, lowercase, number, and special character (@$!%*?&)" 
+              helperText={password.length > 0 && !passwordValidation.isValid ?
+                "Password must contain at least 8 characters, including uppercase, lowercase, number, and special character (@$!%*?&)"
                 : ""
               }
               InputProps={{
@@ -146,36 +146,36 @@ export const RegisterForm: React.FC = () => {
                   Password requirements:
                 </Typography>
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 0.5 }}>
-                  <Typography 
-                    variant="caption" 
+                  <Typography
+                    variant="caption"
                     color={passwordValidation.minLength ? 'success.main' : 'error.main'}
                     sx={{ fontSize: '0.7rem' }}
                   >
                     ✓ 8+ characters
                   </Typography>
-                  <Typography 
-                    variant="caption" 
+                  <Typography
+                    variant="caption"
                     color={passwordValidation.hasUppercase ? 'success.main' : 'error.main'}
                     sx={{ fontSize: '0.7rem' }}
                   >
                     ✓ Uppercase
                   </Typography>
-                  <Typography 
-                    variant="caption" 
+                  <Typography
+                    variant="caption"
                     color={passwordValidation.hasLowercase ? 'success.main' : 'error.main'}
                     sx={{ fontSize: '0.7rem' }}
                   >
                     ✓ Lowercase
                   </Typography>
-                  <Typography 
-                    variant="caption" 
+                  <Typography
+                    variant="caption"
                     color={passwordValidation.hasNumber ? 'success.main' : 'error.main'}
                     sx={{ fontSize: '0.7rem' }}
                   >
                     ✓ Number
                   </Typography>
-                  <Typography 
-                    variant="caption" 
+                  <Typography
+                    variant="caption"
                     color={passwordValidation.hasSpecialChar ? 'success.main' : 'error.main'}
                     sx={{ fontSize: '0.7rem' }}
                   >
@@ -222,8 +222,16 @@ export const RegisterForm: React.FC = () => {
               {loading ? <CircularProgress size={24} /> : 'Register'}
             </Button>
 
-            <Box sx={{ textAlign: 'right' }}>
+            <Box sx={{ textAlign: 'center', mb: 2 }}>
               <Link to="/login">Already have an account? Login</Link>
+            </Box>
+
+            <Box sx={{ textAlign: 'center', fontSize: '0.8rem', color: 'text.secondary' }}>
+              By registering, you agree to our{' '}
+              <Link to="/privacy" style={{ color: 'inherit', textDecoration: 'underline' }}>
+                Privacy Policy & Terms
+              </Link>{' '}
+              and consent to data processing as described.
             </Box>
           </Box>
         </Box>

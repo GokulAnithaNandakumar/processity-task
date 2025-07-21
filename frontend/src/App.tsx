@@ -8,6 +8,8 @@ import { ProtectedRoute } from './components/auth/ProtectedRoute';
 import { LoginForm } from './components/auth/LoginForm';
 import { RegisterForm } from './components/auth/RegisterForm';
 import { Dashboard } from './pages/Dashboard';
+import { PrivacyPolicy } from './pages/PrivacyPolicy';
+import { Settings } from './pages/Settings';
 import { useAuth } from './hooks/useAuth';
 import { theme } from './theme';
 
@@ -37,6 +39,15 @@ const AppRoutes: React.FC = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/settings"
+          element={
+            <ProtectedRoute>
+              <Settings />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </TaskProvider>

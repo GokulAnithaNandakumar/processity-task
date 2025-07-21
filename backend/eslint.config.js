@@ -15,7 +15,13 @@ export default [
         global: "readonly",
         module: "readonly",
         require: "readonly",
-        exports: "readonly"
+        exports: "readonly",
+        setInterval: "readonly",
+        clearInterval: "readonly",
+        setTimeout: "readonly",
+        clearTimeout: "readonly",
+        setImmediate: "readonly",
+        clearImmediate: "readonly"
       }
     },
     rules: {

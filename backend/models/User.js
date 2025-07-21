@@ -27,6 +27,36 @@ const userSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
+  },
+  // GDPR Compliance fields
+  deletionRequested: {
+    type: Boolean,
+    default: false
+  },
+  deletionRequestDate: {
+    type: Date,
+    default: null
+  },
+  deletionReason: {
+    type: String,
+    default: null
+  },
+  status: {
+    type: String,
+    enum: ['active', 'pending_deletion', 'deleted'],
+    default: 'active'
+  },
+  lastLoginAt: {
+    type: Date,
+    default: null
+  },
+  dataProcessingConsent: {
+    type: Boolean,
+    default: true
+  },
+  marketingConsent: {
+    type: Boolean,
+    default: false
   }
 }, {
   timestamps: true

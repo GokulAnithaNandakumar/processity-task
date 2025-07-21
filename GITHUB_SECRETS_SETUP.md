@@ -30,7 +30,7 @@ mongodb+srv://username:password@cluster.mongodb.net/taskmanager
 
 ### 3. JWT_SECRET
 ```
-bae500756288df8fcfed406b3e61f5b2e10f4f0628e8c38725da0effca61a11c
+xxxxxxxxx
 ```
 
 ### 4. AZURE_STATIC_WEB_APPS_API_TOKEN

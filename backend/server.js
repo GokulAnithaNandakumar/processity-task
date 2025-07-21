@@ -5,11 +5,15 @@ const rateLimit = require('express-rate-limit');
 const compression = require('compression');
 const morgan = require('morgan');
 const connectDB = require('./config/database');
+// Import middleware
+const { responseTimeMiddleware, auditMiddleware } = require('./middleware/audit');
 require('dotenv').config();
 
 // Import routes - Test workflow trigger
 const authRoutes = require('./routes/auth');
 const taskRoutes = require('./routes/tasks');
+const gdprRoutes = require('./routes/gdpr');
+const monitoringRoutes = require('./routes/monitoring');
 
 // Initialize Express app
 const app = express();
@@ -21,6 +25,15 @@ if (process.env.NODE_ENV !== 'test') {
 
 // Security middleware
 app.use(helmet());
+
+// Response time tracking
+app.use(responseTimeMiddleware);
+
+// Audit logging
+app.use(auditMiddleware);
+
+// Request tracking for monitoring
+app.use(monitoringRoutes.trackRequest);
 
 // Rate limiting
 const limiter = rateLimit({
@@ -58,6 +71,8 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/tasks', taskRoutes);
+app.use('/api/gdpr', gdprRoutes);
+app.use('/api/monitoring', monitoringRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
@@ -69,7 +84,7 @@ app.get('/api/health', (req, res) => {
 });
 
 // Global error handler
-app.use((err, req, res, next) => {
+app.use((err, req, res, _next) => {
   console.error(err.stack);
   res.status(err.status || 500).json({
     status: 'error',
