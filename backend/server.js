@@ -49,6 +49,7 @@ app.use(cors({
     'http://localhost:5173',
     'http://localhost:3000',
     'http://127.0.0.1:5173',
+    'https://jolly-desert-0d7a9d110.1.azurestaticapps.net',
     process.env.CORS_ORIGIN
   ].filter(Boolean),
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
