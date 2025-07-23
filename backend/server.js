@@ -1,5 +1,4 @@
 const express = require('express');
-const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const compression = require('compression');
@@ -43,7 +42,7 @@ const limiter = rateLimit({
 });
 app.use('/api', limiter);
 
-// CORS
+// Manual CORS configuration (removed express cors middleware)
 const corsOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
@@ -58,30 +57,20 @@ console.log('- CORS_ORIGIN env var:', process.env.CORS_ORIGIN);
 console.log('- NODE_ENV:', process.env.NODE_ENV);
 console.log('- All env vars starting with CORS:', Object.keys(process.env).filter(key => key.includes('CORS')));
 
-app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps, curl, Postman)
-    if (!origin) return callback(null, true);
-    
-    console.log('🔍 CORS origin check:', origin);
-    console.log('🔍 Allowed origins:', corsOrigins);
-
-    if (corsOrigins.includes(origin)) {
-      console.log('✅ Origin allowed:', origin);
-      return callback(null, true);
-    } else {
-      console.log('❌ Origin denied:', origin);
-      return callback(new Error('Not allowed by CORS'));
-    }
-  },
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
-}));
-
 // Add request logging to debug CORS
 app.use((req, res, next) => {
   console.log('🌐', req.method, req.path, '- Origin:', req.headers.origin || 'none');
+  
+  // Manual CORS headers as backup
+  const origin = req.headers.origin;
+  if (corsOrigins.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    console.log('🔧 Manual CORS headers set for origin:', origin);
+  }
+  
   next();
 });
 
@@ -98,6 +87,24 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
+// Handle preflight OPTIONS requests explicitly
+app.options('*', (req, res) => {
+  const origin = req.headers.origin;
+  console.log('🔧 OPTIONS request from origin:', origin);
+  
+  if (corsOrigins.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.status(200).send();
+    console.log('✅ OPTIONS response sent for origin:', origin);
+  } else {
+    res.status(403).send('Origin not allowed');
+    console.log('❌ OPTIONS denied for origin:', origin);
+  }
+});
+
 app.use('/api/auth', authRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/gdpr', gdprRoutes);
