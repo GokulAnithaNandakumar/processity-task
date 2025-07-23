@@ -63,14 +63,14 @@ app.use(cors({
     // Allow requests with no origin (like mobile apps, curl, Postman)
     if (!origin) return callback(null, true);
     
-    console.log(`🔍 CORS origin check: ${origin}`);
-    console.log(`🔍 Allowed origins:`, corsOrigins);
-    
+    console.log('🔍 CORS origin check:', origin);
+    console.log('🔍 Allowed origins:', corsOrigins);
+
     if (corsOrigins.includes(origin)) {
-      console.log(`✅ Origin allowed: ${origin}`);
+      console.log('✅ Origin allowed:', origin);
       return callback(null, true);
     } else {
-      console.log(`❌ Origin denied: ${origin}`);
+      console.log('❌ Origin denied:', origin);
       return callback(new Error('Not allowed by CORS'));
     }
   },
@@ -81,7 +81,7 @@ app.use(cors({
 
 // Add request logging to debug CORS
 app.use((req, res, next) => {
-  console.log(`🌐 ${req.method} ${req.path} - Origin: ${req.headers.origin || 'none'}`);
+  console.log('🌐', req.method, req.path, '- Origin:', req.headers.origin || 'none');
   next();
 });
 

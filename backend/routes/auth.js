@@ -119,4 +119,14 @@ router.post('/login', validateLogin, async (req, res) => {
   }
 });
 
+// @desc    Logout user
+// @route   POST /api/auth/logout
+// @access  Public
+router.post('/logout', (req, res) => {
+  res.status(200).json({
+    status: 'success',
+    message: 'Logged out successfully'
+  });
+});
+
 module.exports = router;

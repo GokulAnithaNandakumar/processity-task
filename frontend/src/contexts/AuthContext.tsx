@@ -2,7 +2,7 @@ import React, { createContext, useReducer, useEffect } from 'react';
 import type { AuthContextType, User } from '../types';
 import { authAPI } from '../services/api';
 import { isApiError } from '../types';
-// import { tokenCookies } from '../utils/cookies'; // Temporarily disabled for debugging
+import { tokenCookies } from '../utils/cookies';
 
 interface AuthProviderProps {
   children: React.ReactNode;
@@ -62,22 +62,20 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
-  // Load user from localStorage on app start (temporary for debugging)
+  // Load user from secure cookies on app start
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const user = localStorage.getItem('user');
+    const token = tokenCookies.getToken();
+    const user = tokenCookies.getUser();
 
     if (token && user) {
       try {
-        const parsedUser = JSON.parse(user);
         dispatch({
           type: 'LOGIN_SUCCESS',
-          payload: { user: parsedUser, token },
+          payload: { user, token },
         });
       } catch (error) {
         console.error('Error parsing stored user data:', error);
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
+        tokenCookies.clearAll();
         dispatch({ type: 'INITIALIZE_COMPLETE' });
       }
     } else {
@@ -92,9 +90,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const { user } = response.data;
       const { token } = response;
 
-      // Store in localStorage (temporary for debugging)
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
+      // Store in secure cookies
+      tokenCookies.setToken(token);
+      tokenCookies.setUser(user);
 
       dispatch({
         type: 'LOGIN_SUCCESS',
@@ -119,9 +117,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const { user } = response.data;
       const { token } = response;
 
-      // Store in localStorage (temporary for debugging)
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
+      // Store in secure cookies
+      tokenCookies.setToken(token);
+      tokenCookies.setUser(user);
 
       dispatch({
         type: 'LOGIN_SUCCESS',
@@ -143,8 +141,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     } catch (error) {
       console.warn('Server logout failed:', error);
     } finally {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
+      tokenCookies.clearAll();
       dispatch({ type: 'LOGOUT' });
     }
   };
