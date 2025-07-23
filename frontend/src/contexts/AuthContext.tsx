@@ -8,19 +8,22 @@ interface AuthState {
   token: string | null;
   loading: boolean;
   error: string | null;
+  isInitialized: boolean; // Add this to track initial load
 }
 
 type AuthAction =
   | { type: 'SET_LOADING'; payload: boolean }
   | { type: 'SET_ERROR'; payload: string | null }
   | { type: 'LOGIN_SUCCESS'; payload: { user: User; token: string } }
-  | { type: 'LOGOUT' };
+  | { type: 'LOGOUT' }
+  | { type: 'INITIALIZE_COMPLETE' };
 
 const initialState: AuthState = {
   user: null,
   token: null,
   loading: false,
   error: null,
+  isInitialized: false,
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -40,9 +43,12 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
         token: action.payload.token,
         loading: false,
         error: null,
+        isInitialized: true,
       };
     case 'LOGOUT':
-      return { ...state, user: null, token: null, loading: false, error: null };
+      return { ...state, user: null, token: null, loading: false, error: null, isInitialized: true };
+    case 'INITIALIZE_COMPLETE':
+      return { ...state, isInitialized: true };
     default:
       return state;
   }
@@ -55,7 +61,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     const token = localStorage.getItem('token');
     const user = localStorage.getItem('user');
-
+    
     if (token && user) {
       try {
         const parsedUser = JSON.parse(user);
@@ -64,10 +70,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           payload: { user: parsedUser, token },
         });
       } catch (error) {
-        console.error('Error parsing user from localStorage:', error);
+        console.error('Error parsing stored user data:', error);
         localStorage.removeItem('token');
         localStorage.removeItem('user');
+        dispatch({ type: 'INITIALIZE_COMPLETE' });
       }
+    } else {
+      dispatch({ type: 'INITIALIZE_COMPLETE' });
     }
   }, []);
 
@@ -139,6 +148,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     logout,
     loading: state.loading,
     error: state.error,
+    isInitialized: state.isInitialized,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

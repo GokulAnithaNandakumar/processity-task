@@ -77,6 +77,7 @@ export interface AuthContextType {
   logout: () => void;
   loading: boolean;
   error: string | null;
+  isInitialized: boolean;
 }
 
 export interface TaskContextType {

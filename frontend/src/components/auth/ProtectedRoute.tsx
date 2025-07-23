@@ -7,8 +7,13 @@ interface ProtectedRouteProps {
 }
 
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const { user, token } = useAuth();
+  const { user, token, isInitialized } = useAuth();
   const location = useLocation();
+
+  // Don't make routing decisions until auth state is initialized
+  if (!isInitialized) {
+    return <div>Loading...</div>;
+  }
 
   if (!user || !token) {
     // Redirect to login page with return url
