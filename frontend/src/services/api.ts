@@ -1,7 +1,7 @@
 import axios from 'axios';
 import type { AxiosResponse } from 'axios';
 import type { AuthResponse, TaskResponse, TasksResponse, TaskStats, Task, TaskFilters } from '../types';
-import { tokenCookies } from '../utils/cookies';
+// import { tokenCookies } from '../utils/cookies'; // Temporarily disabled for debugging
 
 // Create axios instance
 const api = axios.create({
@@ -9,13 +9,13 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: true, // Important: Send cookies with requests
+  // withCredentials: true, // Temporarily disabled to test CORS
 });
 
 // Request interceptor to add auth token
 api.interceptors.request.use(
   (config) => {
-    const token = tokenCookies.getToken();
+    const token = localStorage.getItem('token'); // Temporary: back to localStorage for debugging
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -31,7 +31,8 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      tokenCookies.clearAll();
+      localStorage.removeItem('token'); // Temporary: back to localStorage for debugging
+      localStorage.removeItem('user');
       window.location.href = '/login';
     }
     return Promise.reject(error);
