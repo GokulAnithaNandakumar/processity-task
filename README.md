@@ -1341,5 +1341,3 @@ This Processity Task Manager is a comprehensive full-stack web application devel
 
 **Live Demo**: The application is deployed and accessible at the URLs provided in the Live Deployment section above.
 
-**Built with ❤️ using modern web technologies and cloud-native practices for Processity.**
-
