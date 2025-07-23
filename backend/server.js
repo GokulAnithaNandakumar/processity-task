@@ -59,11 +59,31 @@ console.log('- NODE_ENV:', process.env.NODE_ENV);
 console.log('- All env vars starting with CORS:', Object.keys(process.env).filter(key => key.includes('CORS')));
 
 app.use(cors({
-  origin: corsOrigins,
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl, Postman)
+    if (!origin) return callback(null, true);
+    
+    console.log(`🔍 CORS origin check: ${origin}`);
+    console.log(`🔍 Allowed origins:`, corsOrigins);
+    
+    if (corsOrigins.includes(origin)) {
+      console.log(`✅ Origin allowed: ${origin}`);
+      return callback(null, true);
+    } else {
+      console.log(`❌ Origin denied: ${origin}`);
+      return callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
 }));
+
+// Add request logging to debug CORS
+app.use((req, res, next) => {
+  console.log(`🌐 ${req.method} ${req.path} - Origin: ${req.headers.origin || 'none'}`);
+  next();
+});
 
 // Compression
 app.use(compression());
