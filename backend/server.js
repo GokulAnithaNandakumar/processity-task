@@ -44,14 +44,22 @@ const limiter = rateLimit({
 app.use('/api', limiter);
 
 // CORS
+const corsOrigins = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'http://127.0.0.1:5173',
+  'https://jolly-desert-0d7a9d110.1.azurestaticapps.net',
+  process.env.CORS_ORIGIN
+].filter(Boolean);
+
+console.log('🔧 CORS Debug Info:');
+console.log('- Configured origins:', corsOrigins);
+console.log('- CORS_ORIGIN env var:', process.env.CORS_ORIGIN);
+console.log('- NODE_ENV:', process.env.NODE_ENV);
+console.log('- All env vars starting with CORS:', Object.keys(process.env).filter(key => key.includes('CORS')));
+
 app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'http://localhost:3000',
-    'http://127.0.0.1:5173',
-    'https://jolly-desert-0d7a9d110.1.azurestaticapps.net',
-    process.env.CORS_ORIGIN
-  ].filter(Boolean),
+  origin: corsOrigins,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
