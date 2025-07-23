@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   AppBar,
   Toolbar,
@@ -16,6 +16,20 @@ import { useNavigate } from 'react-router-dom';
 
 export const Header: React.FC = () => {
   const { user, logout } = useAuth();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const handleLogout = async () => {
+    if (isLoggingOut) return;
+
+    try {
+      setIsLoggingOut(true);
+      await logout();
+    } catch (error) {
+      console.error('Logout failed:', error);
+    } finally {
+      setIsLoggingOut(false);
+    }
+  };
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -75,16 +89,17 @@ export const Header: React.FC = () => {
               <Settings style={{ marginRight: 8 }} size={18} />
               Settings & Privacy
             </MenuItem>
-            <MenuItem onClick={logout}>
+            <MenuItem onClick={handleLogout}>
               <LogOut style={{ marginRight: 8 }} size={18} />
-              Logout
+              {isLoggingOut ? 'Logging out...' : 'Logout'}
             </MenuItem>
           </Menu>
 
           <Button
             color="inherit"
-            onClick={logout}
+            onClick={handleLogout}
             startIcon={<LogOut size={18} />}
+            disabled={isLoggingOut}
             sx={{
               textTransform: 'none',
               display: { xs: 'none', md: 'flex' },
@@ -93,7 +108,7 @@ export const Header: React.FC = () => {
               },
             }}
           >
-            Logout
+            {isLoggingOut ? 'Logging out...' : 'Logout'}
           </Button>
         </Box>
       </Toolbar>
