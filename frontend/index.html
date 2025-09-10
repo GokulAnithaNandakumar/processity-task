@@ -3,22 +3,20 @@
   <head>
     <meta charset="UTF-8" />
 
-    <!-- Security Headers -->
+    <!-- Security Headers - Note: Some headers like X-Frame-Options and frame-ancestors should be set by server -->
     <meta http-equiv="Content-Security-Policy" content="
       default-src 'self';
-      script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.monitor.azure.com;
+      script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.monitor.azure.com https://vercel.live https://*.vercel.app;
       style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
       font-src 'self' https://fonts.gstatic.com;
       img-src 'self' data: https: blob:;
-      connect-src 'self' https://*.azurewebsites.net https://*.azure.com https://*.applicationinsights.azure.com;
+      connect-src 'self' https://*.azurewebsites.net https://*.azure.com https://*.applicationinsights.azure.com https://*.vercel.app https://vercel.live https://events.launchdarkly.com;
       object-src 'none';
       base-uri 'self';
       form-action 'self';
-      frame-ancestors 'none';
       upgrade-insecure-requests;
     " />
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-    <meta http-equiv="X-Frame-Options" content="DENY" />
     <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
     <meta http-equiv="Permissions-Policy" content="

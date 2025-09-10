@@ -22,8 +22,24 @@ if (process.env.NODE_ENV !== 'test') {
   connectDB();
 }
 
-// Security middleware
-app.use(helmet());
+// Security middleware with relaxed CSP for development
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ['\'self\''],
+      scriptSrc: ['\'self\'', '\'unsafe-inline\'', '\'unsafe-eval\'', 'https://js.monitor.azure.com', 'https://vercel.live', 'https://*.vercel.app'],
+      styleSrc: ['\'self\'', '\'unsafe-inline\'', 'https://fonts.googleapis.com'],
+      fontSrc: ['\'self\'', 'https://fonts.gstatic.com'],
+      imgSrc: ['\'self\'', 'data:', 'https:', 'blob:'],
+      connectSrc: ['\'self\'', 'https://*.azurewebsites.net', 'https://*.azure.com', 'https://*.applicationinsights.azure.com', 'https://*.vercel.app', 'https://vercel.live', 'https://events.launchdarkly.com'],
+      objectSrc: ['\'none\''],
+      baseUri: ['\'self\''],
+      formAction: ['\'self\''],
+      upgradeInsecureRequests: [],
+    },
+  },
+  frameOptions: false, // Let it be handled by meta tag
+}));
 
 // Response time tracking
 app.use(responseTimeMiddleware);
@@ -47,8 +63,9 @@ const corsOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
   'http://127.0.0.1:5173',
-  'https://task-manager-three-pi-63.vercel.app/',
+  'https://task-manager-three-pi-63.vercel.app',
   'https://jolly-desert-0d7a9d110.1.azurestaticapps.net',
+  'https://vercel.live', // For Vercel preview features
   process.env.CORS_ORIGIN
 ].filter(Boolean);
 

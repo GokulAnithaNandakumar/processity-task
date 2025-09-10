@@ -104,7 +104,7 @@ export const LoginForm: React.FC = () => {
               sx={{ mt: 2, mb: 1 }}
               onClick={() => {
                 setEmail('test@gmail.com');
-                setPassword('test@1231');
+                setPassword('Test@1231');
               }}
               disabled={loading}
             >
