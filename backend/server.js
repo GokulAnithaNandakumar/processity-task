@@ -31,6 +31,7 @@ app.use(helmet({
       styleSrc: ['\'self\'', '\'unsafe-inline\'', 'https://fonts.googleapis.com'],
       fontSrc: ['\'self\'', 'https://fonts.gstatic.com'],
       imgSrc: ['\'self\'', 'data:', 'https:', 'blob:'],
+      frameSrc: ['\'self\'', 'https://vercel.live', 'https://*.vercel.app'],
       connectSrc: ['\'self\'', 'https://*.azurewebsites.net', 'https://*.azure.com', 'https://*.applicationinsights.azure.com', 'https://*.vercel.app', 'https://vercel.live', 'https://events.launchdarkly.com'],
       objectSrc: ['\'none\''],
       baseUri: ['\'self\''],
@@ -66,7 +67,8 @@ const corsOrigins = [
   'https://task-manager-three-pi-63.vercel.app',
   'https://jolly-desert-0d7a9d110.1.azurestaticapps.net',
   'https://vercel.live', // For Vercel preview features
-  process.env.CORS_ORIGIN
+  process.env.CORS_ORIGIN,
+  process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null
 ].filter(Boolean);
 
 console.log('🔧 CORS Debug Info:');
