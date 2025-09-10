@@ -47,6 +47,7 @@ const corsOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
   'http://127.0.0.1:5173',
+  'https://task-manager-three-pi-63.vercel.app/',
   'https://jolly-desert-0d7a9d110.1.azurestaticapps.net',
   process.env.CORS_ORIGIN
 ].filter(Boolean);
@@ -60,7 +61,7 @@ console.log('- All env vars starting with CORS:', Object.keys(process.env).filte
 // Add request logging to debug CORS
 app.use((req, res, next) => {
   console.log('🌐', req.method, req.path, '- Origin:', req.headers.origin || 'none');
-  
+
   // Manual CORS headers as backup
   const origin = req.headers.origin;
   if (corsOrigins.includes(origin)) {
@@ -70,7 +71,7 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     console.log('🔧 Manual CORS headers set for origin:', origin);
   }
-  
+
   next();
 });
 
@@ -91,7 +92,7 @@ app.use(express.urlencoded({ extended: true }));
 app.options('*', (req, res) => {
   const origin = req.headers.origin;
   console.log('🔧 OPTIONS request from origin:', origin);
-  
+
   if (corsOrigins.includes(origin)) {
     res.header('Access-Control-Allow-Origin', origin);
     res.header('Access-Control-Allow-Credentials', 'true');

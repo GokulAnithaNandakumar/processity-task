@@ -100,8 +100,21 @@ export const LoginForm: React.FC = () => {
 
             <Button
               fullWidth
+              variant="outlined"
+              sx={{ mt: 2, mb: 1 }}
+              onClick={() => {
+                setEmail('test@gmail.com');
+                setPassword('test@1231');
+              }}
+              disabled={loading}
+            >
+              🧪 Click here to test (Auto-fill test credentials)
+            </Button>
+
+            <Button
+              fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 1, mb: 2 }}
               onClick={handleLogin}
               disabled={loading}
             >
